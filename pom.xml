@@ -76,6 +76,11 @@
       <groupId>org.apache.camel.quarkus</groupId>
       <artifactId>camel-quarkus-mail</artifactId>
     </dependency>
+    <dependency>
+      <groupId>net.sourceforge.htmlunit</groupId>
+      <artifactId>htmlunit</artifactId>
+      <version>2.43.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
