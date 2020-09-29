@@ -24,7 +24,11 @@ public class SearchQueryFileWriter {
     public SearchQueryFileWriter() {
     }
 
-    public Collection<SearchQuery> findAll() {
+    /**
+     * loads all search queries from file.
+     * @return collection of all search queries saved in file.
+     */
+    Collection<SearchQuery> findAll() {
 
         try(Reader reader = Files.newBufferedReader(Paths.get(FILE_PATH))) {
             CsvToBean<SearchQuery> csvToBean = new CsvToBeanBuilder<SearchQuery>(reader)
@@ -39,7 +43,11 @@ public class SearchQueryFileWriter {
 
     }
 
-    public void write(List<SearchQuery> queries){
+    /**
+     * write all given search queries to file.
+     * @param queries list of {@link SearchQuery}.
+     */
+    void write(List<SearchQuery> queries){
 
         try(Writer writer = Files.newBufferedWriter(Paths.get(FILE_PATH))) {
 

@@ -3,6 +3,9 @@ package org.oszimt.fa83.pojo;
 import com.opencsv.bean.CsvBindByName;
 import org.oszimt.fa83.api.Entity;
 
+/**
+ * Pojo for setting up a search in immoscout.
+ */
 public class SearchQuery implements Entity {
 
     @CsvBindByName(column = "pk")
