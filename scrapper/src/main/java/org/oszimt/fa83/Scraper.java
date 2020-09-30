@@ -4,9 +4,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 
-import java.net.URLEncoder;
 import java.util.List;
 
 public class Scraper {
@@ -19,11 +17,9 @@ public class Scraper {
 
     }
 
+    public static void scrape() {
 
-    public static void scrape(){
-
-
-        String searchQuery = "berlin/berlin" ;
+        String searchQuery = "berlin/berlin";
 
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
@@ -33,10 +29,10 @@ public class Scraper {
             HtmlPage page = client.getPage(searchUrl);
             log.info(page.getPage());
             List<HtmlElement> elementsByAttribute = page.getDocumentElement().getElementsByAttribute("ul", "id", "resultListItems");
-            for (HtmlElement element : elementsByAttribute){
+            for (HtmlElement element : elementsByAttribute) {
                 log.info(element);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

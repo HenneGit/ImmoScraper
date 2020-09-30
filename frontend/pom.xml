@@ -41,19 +41,14 @@
             <artifactId>javafx-controls</artifactId>
             <version>${javafx-version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-maven-plugin</artifactId>
-            <version>0.0.4</version>
-            <type>maven-plugin</type>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>
-                <plugin>
+            <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-fxml</artifactId>
-                <version>0.0.4</version>
+                <version>${javafx-version}</version>
                 <configuration>
                     <mainClass>org.oszimt.fa83.MainView</mainClass>
                 </configuration>
