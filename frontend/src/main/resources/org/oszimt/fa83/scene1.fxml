@@ -9,6 +9,6 @@
       prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.oszimt.fa83.Scene1Controller">
     <children>
-        <Button layoutX="274.0" layoutY="188.0" mnemonicParsing="false" onAction="#switchScene" text="Go to scene 2!" />
+        <Button fx:id="btn1" layoutX="274.0" layoutY="188.0" mnemonicParsing="false" onAction="#switchScene" text="Go to scene 2!" />
     </children>
 </Pane>
