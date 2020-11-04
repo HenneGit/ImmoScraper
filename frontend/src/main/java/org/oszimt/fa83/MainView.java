@@ -42,10 +42,10 @@ public class MainView extends Application {
         Scene scene2 = new Scene(pane2);
 
         // Pass reference the each scenes controller
-        controller1.setScene2(scene2);
+/*        controller1.setScene2(scene2);
         controller1.setMain(this);
         controller2.setScene1(scene1);
-        controller2.setMain(this);
+        controller2.setMain(this);*/
 
         //Display scene 1 at first
         window.setScene(scene1);
