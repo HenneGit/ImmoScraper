@@ -3,13 +3,11 @@ package org.oszimt.fa83;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class Scraper {
 
-    private static Logger log = Logger.getLogger(Scraper.class);
 
     public static void main(String[] args) {
 
@@ -27,10 +25,10 @@ public class Scraper {
         try {
             String searchUrl = "https://www.immobilienscout24.de/Suche/de/" + searchQuery + "/wohnung-mieten?enteredFrom=one_step_search";
             HtmlPage page = client.getPage(searchUrl);
-            log.info(page.getPage());
+            System.out.println(page.getPage());
             List<HtmlElement> elementsByAttribute = page.getDocumentElement().getElementsByAttribute("ul", "id", "resultListItems");
             for (HtmlElement element : elementsByAttribute) {
-                log.info(element);
+                System.out.println(element);
             }
         } catch (Exception e) {
             e.printStackTrace();
