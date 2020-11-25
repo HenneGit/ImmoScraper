@@ -10,8 +10,10 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.pojo.SearchQuery;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class SearchQueryFileWriter {
 
-    private final String FILE_PATH = "queries.csv";
+    private final String FILE = "queries.csv";//korrigieren!
 
     public SearchQueryFileWriter() {
     }
@@ -29,8 +31,9 @@ public class SearchQueryFileWriter {
      * @return collection of all search queries saved in file.
      */
     Collection<SearchQuery> findAll() {
-
-        try(Reader reader = Files.newBufferedReader(Paths.get(FILE_PATH))) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(FILE);
+        try(Reader reader = Files.newBufferedReader(Paths.get(resource.getPath()))) {
             CsvToBean<SearchQuery> csvToBean = new CsvToBeanBuilder<SearchQuery>(reader)
                     .withType(SearchQuery.class)
                     .withIgnoreLeadingWhiteSpace(true)
@@ -48,8 +51,9 @@ public class SearchQueryFileWriter {
      * @param queries list of {@link SearchQuery}.
      */
     void write(List<SearchQuery> queries){
-
-        try(Writer writer = Files.newBufferedWriter(Paths.get(FILE_PATH))) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(FILE);
+        try(Writer writer = Files.newBufferedWriter(Paths.get(resource.getPath()))) {
 
             StatefulBeanToCsv<SearchQuery> csvWriter = new StatefulBeanToCsvBuilder<SearchQuery>(writer)
                     .withSeparator(CSVWriter.DEFAULT_SEPARATOR)

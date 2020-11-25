@@ -16,8 +16,9 @@ public class SearchQueryRepositoryImpl implements SearchQueryRepository<SearchQu
     private SearchQueryFileWriter fileWriter;
 
 
-    public SearchQueryRepositoryImpl(SearchQueryFileWriter fileWriter) {
-        this.fileWriter = fileWriter;
+    public SearchQueryRepositoryImpl() {
+        //korrigieren.
+        this.fileWriter = new SearchQueryFileWriter();
         load();
     }
 
