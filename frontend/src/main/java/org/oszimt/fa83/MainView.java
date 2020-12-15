@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import org.oszimt.fa83.pojo.SearchQuery;
 import org.oszimt.fa83.repository.SearchQueryRepositoryImpl;
 
-public class MainView extends Application {
+public class MainView extends AbstractView {
 
 
 
@@ -25,9 +25,6 @@ public class MainView extends Application {
     private Pane pane1;
     private Pane pane2;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -55,6 +52,7 @@ public class MainView extends Application {
         Button startButton = new Button("startButton");
 
         ObservableList<SearchQuery> sqListBox = FXCollections.observableArrayList();
+        SearchQuery query = new SearchQuery(null,null,null,null);
 
         sqListBox.addAll(sqRepo.findAll());
 

@@ -1,6 +1,5 @@
 package org.oszimt.fa83.util;
 
-import java.rmi.server.UID;
 import java.util.UUID;
 
 public final class IdCounter {
