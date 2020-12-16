@@ -56,7 +56,7 @@
                 <artifactId>javafx-fxml</artifactId>
                 <version>${javafx-version}</version>
                 <configuration>
-                    <mainClass>org.oszimt.fa83.MainView</mainClass>
+                    <mainClass>org.oszimt.fa83.view.MainView</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,4 +1,6 @@
-package org.oszimt.fa83;
+package org.oszimt.fa83.view;
+
+import org.oszimt.fa83.StageController;
 
 public class AbstractView {
 

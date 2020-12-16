@@ -1,9 +1,9 @@
-package org.oszimt.fa83;
+package org.oszimt.fa83.definition;
 
 public enum Layout {
 
 
-    MAIN("scene2.fxml"), QUERY(""), ERROR("error.fxml");
+    MAIN("MainView.fxml"), QUERY("QuerySetupView"), ERROR("error.fxml");
 
 
     private String fileName;

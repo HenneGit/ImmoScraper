@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.oszimt.fa83.definition.Layout;
 
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ public class StageController {
     }
 
     public Parent loadFXML(final String fxml) throws IOException{
-        final FXMLLoader fxmlLoader = new FXMLLoader()
+        final FXMLLoader fxmlLoader = new FXMLLoader(ApplicationMain.class.getResource(fxml));
         loader = fxmlLoader;
         return fxmlLoader.load();
     }

@@ -2,11 +2,16 @@ package org.oszimt.fa83.pojo;
 
 import com.opencsv.bean.CsvBindByName;
 import org.oszimt.fa83.api.Entity;
+import org.oszimt.fa83.util.IdCounter;
 
 /**
  * Pojo for setting up a search in immoscout.
  */
 public class SearchQuery implements Entity {
+
+
+    @CsvBindByName(column = "queryName")
+    private String queryName;
 
     @CsvBindByName(column = "pk")
     private Comparable<?> pk;
@@ -20,18 +25,16 @@ public class SearchQuery implements Entity {
     @CsvBindByName(column = "priceTo")
     private Double priceTo;
 
-    public SearchQuery(Comparable<?> pk, String city, Double priceFrom, Double priceTo) {
-        this.pk = pk;
-        this.city = city;
-        this.priceFrom = priceFrom;
-        this.priceTo = priceTo;
+    public SearchQuery(){
+        //necessary for CSVToBeanReader
     }
 
-    public SearchQuery(String pk, String city, String priceFrom, String priceTo) {
-        this.pk = pk;
-        this.city = city;
-        this.priceFrom = Double.parseDouble(priceFrom);
-        this.priceTo = Double.parseDouble(priceTo);
+    private SearchQuery(SearchQueryBuilder builder) {
+        this.pk = IdCounter.createId();
+        this.city = builder.city;
+        this.priceFrom = builder.priceFrom;
+        this.priceTo = builder.priceTo;
+        this.queryName = builder.queryName;
     }
 
     @Override
@@ -66,5 +69,47 @@ public class SearchQuery implements Entity {
 
     public void setPriceTo(Double priceTo) {
         this.priceTo = priceTo;
+    }
+
+    public String getQueryName() {
+        return queryName;
+    }
+
+    public void setQueryName(String queryName) {
+        this.queryName = queryName;
+    }
+
+
+    public static class SearchQueryBuilder{
+        private String city;
+        private Double priceFrom;
+        private Double priceTo;
+        private Comparable<?> pk;
+        private String queryName;
+
+        public SearchQueryBuilder city(String city){
+            this.city = city;
+            return this;
+        }
+
+        public SearchQueryBuilder queryName(String queryName){
+            this.queryName = queryName;
+            return this;
+        }
+
+        public SearchQueryBuilder priceFrom(Double priceFrom){
+            this.priceFrom = priceFrom;
+            return this;
+        }
+
+        public SearchQueryBuilder priceTo(Double priceTo){
+            this.priceTo = priceTo;
+            return this;
+        }
+
+        public SearchQuery build(){
+            return new SearchQuery(this);
+        }
+
     }
 }

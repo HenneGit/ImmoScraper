@@ -1,4 +1,4 @@
-package org.oszimt.fa83;
+package org.oszimt.fa83.definition;
 
 public enum RoomSize {
 

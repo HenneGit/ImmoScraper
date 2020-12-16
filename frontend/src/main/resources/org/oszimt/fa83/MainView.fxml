@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.oszimt.fa83.view.MainView">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="18.0" prefHeight="35.0"
+               prefWidth="572.0" text="ImmoScraper" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="24.0"/>
+            </font>
+        </Label>
+        <ComboBox fx:id="queryComboBox" layoutX="204.0" layoutY="126.0" prefHeight="25.0" prefWidth="198.0"
+                  promptText="Suchanfrage auswählen..."/>
+        <Button fx:id="setupQuery" layoutX="480.0" layoutY="340.0" mnemonicParsing="false" onAction="#switchToQuerySetup"
+                prefHeight="36.0" prefWidth="106.0"
+                style="-fx-border-radius: 30; -fx-background-color: yellow; -fx-background-radius: 30;" text="Los!"
+                textAlignment="CENTER">
+            <font>
+                <Font name="Calibri" size="24.0"/>
+            </font>
+        </Button>
+        <Text layoutX="287.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="oder">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Text>
+        <Text layoutX="119.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Direkt auf Los! und eine neue Suchanfrage erstellen!">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Text>
+    </children>
+</Pane>

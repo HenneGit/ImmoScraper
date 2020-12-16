@@ -1,7 +1,8 @@
 package org.oszimt.fa83.repository;
 
-import org.oszimt.fa83.api.SearchQueryRepository;
+import org.oszimt.fa83.api.Repository;
 import org.oszimt.fa83.pojo.SearchQuery;
+import org.oszimt.fa83.repository.api.SearchQueryRepository;
 import org.oszimt.fa83.util.IdCounter;
 
 import java.util.ArrayList;
@@ -9,17 +10,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SearchQueryRepositoryImpl implements SearchQueryRepository<SearchQuery> {
+public class SearchQueryRepositoryImpl implements SearchQueryRepository {
 
     private Map<Comparable<?>, SearchQuery> repository = new HashMap<>();
 
-    private SearchQueryFileWriter fileWriter;
+    private static SearchQueryRepository instance = new SearchQueryRepositoryImpl();
+
+    private SearchQueryFileWriter fileWriter = SearchQueryFileWriter.getInstance();
 
 
-    public SearchQueryRepositoryImpl() {
-        //korrigieren.
-        this.fileWriter = new SearchQueryFileWriter();
+    private SearchQueryRepositoryImpl() {
         load();
+    }
+
+    public static Repository getInstance(){
+        return instance;
     }
 
     @Override
