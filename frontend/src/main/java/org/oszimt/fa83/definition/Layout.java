@@ -3,7 +3,7 @@ package org.oszimt.fa83.definition;
 public enum Layout {
 
 
-    MAIN("MainView.fxml"), QUERY("QuerySetupView"), ERROR("error.fxml");
+    MAIN("MainView.fxml"), QUERY("QuerySetupView.fxml"), ERROR("error.fxml");
 
 
     private String fileName;
