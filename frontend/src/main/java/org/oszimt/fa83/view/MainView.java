@@ -1,5 +1,7 @@
 package org.oszimt.fa83.view;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import org.oszimt.fa83.repository.SearchQueryFileWriter;
 import org.oszimt.fa83.repository.SearchQueryRepositoryImpl;
 import org.oszimt.fa83.repository.api.SearchQueryRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,11 @@ public class MainView extends AbstractView {
                 .priceTo(200D).build();
         List<SearchQuery> queries = new ArrayList<>();
         queries.add(query);
-        writer.write(queries);
+        try {
+            writer.write(queries);
+        } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
+            callError(e);
+        }
         ObservableList<SearchQuery> queryList = FXCollections.observableArrayList(repository.findAll());
         queryComboBox.itemsProperty().setValue(queryList);
         convertComboDisplayList();

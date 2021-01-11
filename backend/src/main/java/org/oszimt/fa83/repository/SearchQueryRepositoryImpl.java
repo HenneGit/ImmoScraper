@@ -1,10 +1,13 @@
 package org.oszimt.fa83.repository;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.api.Repository;
 import org.oszimt.fa83.pojo.SearchQuery;
 import org.oszimt.fa83.repository.api.SearchQueryRepository;
 import org.oszimt.fa83.util.IdCounter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,7 +57,7 @@ public class SearchQueryRepositoryImpl implements SearchQueryRepository {
         this.repository.remove(pk);
     }
 
-    public void write() {
+    public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         this.fileWriter.write(new ArrayList<>(this.repository.values()));
     }
 

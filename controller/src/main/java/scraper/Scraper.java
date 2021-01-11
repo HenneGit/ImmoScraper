@@ -1,4 +1,4 @@
-package org.oszimt.fa83;
+package scraper;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;

@@ -12,7 +12,7 @@
         <module>backend</module>
         <module>frontend</module>
         <module>controller</module>
-        <module>scrapper</module>
+        <module>app</module>
     </modules>
     <build>
         <plugins>

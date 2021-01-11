@@ -67,15 +67,12 @@ public class SearchQueryFileWriter {
      *
      * @param queries list of {@link SearchQuery}.
      */
-    public void write(List<SearchQuery> queries) {
-        try {
+    public void write(List<SearchQuery> queries) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
             path = Paths.get(Paths.get(new File("").getPath()).toRealPath() + "/resources");
             if (!Files.exists(path)){
                 path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource(FILE)).getPath());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         try (Writer writer = Files.newBufferedWriter(path)) {
 
             StatefulBeanToCsv<SearchQuery> csvWriter = new StatefulBeanToCsvBuilder<SearchQuery>(writer)
@@ -88,7 +85,7 @@ public class SearchQueryFileWriter {
 
             csvWriter.write(queries);
         } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 

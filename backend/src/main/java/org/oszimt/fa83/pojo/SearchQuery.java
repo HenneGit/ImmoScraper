@@ -1,6 +1,7 @@
 package org.oszimt.fa83.pojo;
 
 import com.opencsv.bean.CsvBindByName;
+import org.oszimt.fa83.ValidationException;
 import org.oszimt.fa83.api.Entity;
 import org.oszimt.fa83.util.IdCounter;
 
@@ -106,6 +107,11 @@ public class SearchQuery implements Entity {
             this.priceTo = priceTo;
             return this;
         }
+        public SearchQueryBuilder validate() throws ValidationException {
+           //validation
+           return this;
+        }
+
 
         public SearchQuery build(){
             return new SearchQuery(this);

@@ -16,6 +16,8 @@ public class QuerySetupView extends AbstractView{
 
     @FXML
     private void switchToMain(){
+
+
         StageController.getInstance().setRoot(Layout.MAIN);
     }
 
