@@ -12,7 +12,7 @@ public class Scraper {
     public Scraper() {
     }
 
-    public void scrape(ScrapeQuery query) {
+    public ScrapeResultPojo scrape(ScrapeQuery query) {
 
         //todo create object for srapce success
         String searchQuery = "berlin/berlin";
@@ -30,6 +30,7 @@ public class Scraper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new ScrapeResultPojo(null,null);
     }
 
 

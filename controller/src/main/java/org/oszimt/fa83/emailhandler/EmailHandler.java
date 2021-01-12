@@ -17,7 +17,6 @@ public class EmailHandler {
     public Properties getMailServerProperties() {
 
         String emailPort = "587";//gmail's smtp port
-
         Properties emailProperties = new Properties();
         emailProperties.put("mail.smtp.port", emailPort);
         emailProperties.put("mail.smtp.auth", "true");
@@ -26,9 +25,9 @@ public class EmailHandler {
 
     }
 
-    public void createEmailMessage(Properties emailProperties, String email, String body, String emailSubject) throws AddressException,
+    public void createEmailMessage(String email, String body, String emailSubject) throws AddressException,
             MessagingException {
-        Session mailSession = Session.getDefaultInstance(emailProperties, null);
+        Session mailSession = Session.getDefaultInstance(getMailServerProperties(), null);
         MimeMessage emailMessage = new MimeMessage(mailSession);
         emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
         emailMessage.setSubject(emailSubject);
@@ -38,7 +37,7 @@ public class EmailHandler {
 
     }
 
-    public static void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
+    public void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
         String emailHost = "smtp.gmail.com";
         String fromUser = "immoscraper24";
         String fromUserEmailPassword = "!mm0Scr4p3r";
