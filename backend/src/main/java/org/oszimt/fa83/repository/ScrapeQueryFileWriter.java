@@ -44,6 +44,9 @@ public class ScrapeQueryFileWriter {
             if (!Files.exists(path)) {
                 path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("")).getPath());
             }
+            if (!Files.exists(path)) {
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
