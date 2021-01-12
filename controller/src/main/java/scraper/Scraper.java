@@ -3,22 +3,19 @@ package scraper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.oszimt.fa83.pojo.ScrapeQuery;
 
 import java.util.List;
 
 public class Scraper {
 
-
-    public static void main(String[] args) {
-
-        scrape();
-
+    public Scraper() {
     }
 
-    public static void scrape() {
+    public void scrape(ScrapeQuery query) {
 
+        //todo create object for srapce success
         String searchQuery = "berlin/berlin";
-
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);

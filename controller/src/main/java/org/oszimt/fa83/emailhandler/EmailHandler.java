@@ -11,15 +11,10 @@ import java.util.Properties;
 
 public class EmailHandler {
 
-
-    public static void main(String args[]) throws AddressException,
-            MessagingException {
-
-        Properties properties = setMailServerProperties();
-        createEmailMessage(properties);
+    public EmailHandler() {
     }
 
-    public static Properties setMailServerProperties() {
+    public Properties getMailServerProperties() {
 
         String emailPort = "587";//gmail's smtp port
 
@@ -31,40 +26,25 @@ public class EmailHandler {
 
     }
 
-    public static void createEmailMessage(Properties emailProperties) throws AddressException,
+    public void createEmailMessage(Properties emailProperties, String email, String body, String emailSubject) throws AddressException,
             MessagingException {
-        String[] toEmails = { "he.ahrens@gmail.com" };
-        String emailSubject = "Java Email";
-        String emailBody = "This is an email sent by JavaMail api.";
-
-
-
         Session mailSession = Session.getDefaultInstance(emailProperties, null);
         MimeMessage emailMessage = new MimeMessage(mailSession);
-
-        for (int i = 0; i < toEmails.length; i++) {
-            emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmails[i]));
-        }
-
+        emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
         emailMessage.setSubject(emailSubject);
-        emailMessage.setContent(emailBody, "text/html");//for a html email
-        //emailMessage.setText(emailBody);// for a text email
+        emailMessage.setContent(body, "text/html");//for a html email
+        emailMessage.setText(body);// for a text email
         sendEmail(mailSession, emailMessage);
 
     }
 
     public static void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
-
         String emailHost = "smtp.gmail.com";
-
         String fromUser = "immoscraper24";
         String fromUserEmailPassword = "!mm0Scr4p3r";
-
         Transport transport = mailSession.getTransport("smtp");
-
         transport.connect(emailHost, fromUser, fromUserEmailPassword);
         transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
         transport.close();
-        System.out.println("Email sent successfully.");
     }
 }
