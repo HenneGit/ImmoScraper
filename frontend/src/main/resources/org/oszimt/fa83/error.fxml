@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="236.0" prefWidth="374.0" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.oszimt.fa83.view.ErrorView">
+   <children>
+      <TextArea fx:id="messageBox" layoutX="39.0" layoutY="12.0" prefHeight="162.0" prefWidth="302.0" />
+      <Button fx:id="okButton" layoutX="169.0" layoutY="184.0" mnemonicParsing="false" text="Ok" onAction="#close"/>
+   </children>
+</Pane>

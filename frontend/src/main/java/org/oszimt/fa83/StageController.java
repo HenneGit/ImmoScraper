@@ -5,8 +5,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.oszimt.fa83.definition.Layout;
+import org.oszimt.fa83.view.ErrorView;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class StageController {
 
@@ -51,7 +54,12 @@ public class StageController {
         } catch (IOException e) {
             System.exit(1);
         }
-
+        ErrorView view = loader.getController();
+        StringWriter writer = new StringWriter();
+        PrintWriter pw = new PrintWriter(writer);
+        exception.printStackTrace(pw);
+        view.setMessage(writer.toString());
+        view.initStage(root);
         //load error view and set error.
 
 
