@@ -3,8 +3,8 @@ package org.oszimt.fa83.repository;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.api.Repository;
-import org.oszimt.fa83.pojo.SearchQuery;
-import org.oszimt.fa83.repository.api.SearchQueryRepository;
+import org.oszimt.fa83.pojo.ScrapeQuery;
+import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 import org.oszimt.fa83.util.IdCounter;
 
 import java.io.IOException;
@@ -13,16 +13,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SearchQueryRepositoryImpl implements SearchQueryRepository {
+public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
-    private Map<Comparable<?>, SearchQuery> repository = new HashMap<>();
+    private Map<Comparable<?>, ScrapeQuery> repository = new HashMap<>();
 
-    private static SearchQueryRepository instance = new SearchQueryRepositoryImpl();
+    private static ScrapeQueryRepository instance = new ScrapeQueryRepositoryImpl();
 
-    private SearchQueryFileWriter fileWriter = SearchQueryFileWriter.getInstance();
+    private ScrapeQueryFileWriter fileWriter = ScrapeQueryFileWriter.getInstance();
 
-
-    private SearchQueryRepositoryImpl() {
+    private ScrapeQueryRepositoryImpl() {
         load();
     }
 
@@ -31,14 +30,14 @@ public class SearchQueryRepositoryImpl implements SearchQueryRepository {
     }
 
     @Override
-    public Comparable<?> create(SearchQuery query) {
+    public Comparable<?> create(ScrapeQuery query) {
         Comparable<?> uuid = IdCounter.createId();
         repository.put(uuid, query);
         return uuid;
     }
 
     @Override
-    public Collection<SearchQuery> findAll() {
+    public Collection<ScrapeQuery> findAll() {
 
         if (this.repository.size() == 0){
             load();
@@ -48,7 +47,7 @@ public class SearchQueryRepositoryImpl implements SearchQueryRepository {
     }
 
     @Override
-    public SearchQuery findByPk(Comparable<?> pk) {
+    public ScrapeQuery findByPk(Comparable<?> pk) {
        return this.repository.get(pk);
     }
 

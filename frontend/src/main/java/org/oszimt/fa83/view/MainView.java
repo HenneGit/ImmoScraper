@@ -10,10 +10,12 @@ import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;
 import org.oszimt.fa83.StageController;
 import org.oszimt.fa83.definition.Layout;
-import org.oszimt.fa83.pojo.SearchQuery;
-import org.oszimt.fa83.repository.SearchQueryFileWriter;
-import org.oszimt.fa83.repository.SearchQueryRepositoryImpl;
-import org.oszimt.fa83.repository.api.SearchQueryRepository;
+import org.oszimt.fa83.pojo.ScrapeQuery;
+import org.oszimt.fa83.pojo.ValidationError;
+import org.oszimt.fa83.repository.ScrapeQueryFileWriter;
+import org.oszimt.fa83.repository.ScrapeQueryRepositoryImpl;
+import org.oszimt.fa83.repository.api.ScrapeQueryController;
+import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,27 +28,31 @@ public class MainView extends AbstractView {
     private Button setupQuery;
 
     @FXML
-    private ComboBox<SearchQuery> queryComboBox;
+    private ComboBox<ScrapeQuery> queryComboBox;
 
-    private SearchQueryRepository repository = (SearchQueryRepository) SearchQueryRepositoryImpl.getInstance();
+    private final ScrapeQueryRepository repository = (ScrapeQueryRepository) ScrapeQueryRepositoryImpl.getInstance();
 
 
-    public void initialize(){
+    public void initialize() throws ValidationError {
 
-        SearchQueryFileWriter writer = SearchQueryFileWriter.getInstance();
-        SearchQuery query = new SearchQuery.SearchQueryBuilder()
+        ScrapeQueryFileWriter writer = ScrapeQueryFileWriter.getInstance();
+        ScrapeQuery query = new ScrapeQuery.ScrapeQueryBuilder()
                 .queryName("Berlin 1")
                 .city("Berlin")
-                .priceFrom(4D)
-                .priceTo(200D).build();
-        List<SearchQuery> queries = new ArrayList<>();
+                .radius(15)
+                .space(40)
+                .priceTo(700D)
+                .build();
+        List<ScrapeQuery> queries = new ArrayList<>();
         queries.add(query);
+
         try {
             writer.write(queries);
         } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
             callError(e);
         }
-        ObservableList<SearchQuery> queryList = FXCollections.observableArrayList(repository.findAll());
+
+        ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(repository.findAll());
         queryComboBox.itemsProperty().setValue(queryList);
         convertComboDisplayList();
     }
@@ -61,11 +67,11 @@ public class MainView extends AbstractView {
     private void convertComboDisplayList() {
         queryComboBox.setConverter(new StringConverter<>() {
             @Override
-            public String toString(SearchQuery product) {
+            public String toString(ScrapeQuery product) {
                 return product.getQueryName();
             }
             @Override
-            public SearchQuery fromString(final String string) {
+            public ScrapeQuery fromString(final String string) {
                 return queryComboBox.getItems().stream().filter(query -> query.getQueryName().equals(string)).findFirst().orElse(null);
             }
         });

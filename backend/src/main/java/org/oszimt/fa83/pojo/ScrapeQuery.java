@@ -1,14 +1,13 @@
 package org.oszimt.fa83.pojo;
 
 import com.opencsv.bean.CsvBindByName;
-import org.oszimt.fa83.ValidationException;
 import org.oszimt.fa83.api.Entity;
 import org.oszimt.fa83.util.IdCounter;
 
 /**
  * Pojo for setting up a search in immoscout.
  */
-public class SearchQuery implements Entity {
+public class ScrapeQuery implements Entity {
 
 
     @CsvBindByName(column = "queryName")
@@ -20,22 +19,30 @@ public class SearchQuery implements Entity {
     @CsvBindByName(column = "city")
     private String city;
 
-    @CsvBindByName(column = "priceFrom")
-    private Double priceFrom;
-
     @CsvBindByName(column = "priceTo")
     private Double priceTo;
 
-    public SearchQuery(){
-        //necessary for CSVToBeanReader
+    @CsvBindByName(column = "space")
+    private Integer space;
+
+    @CsvBindByName(column = "radius")
+    private Integer radius;
+
+
+    /**
+     * use for bean creation only. To create new SrapeQuery object use {@link ScrapeQueryBuilder}.
+     */
+    public ScrapeQuery(){
+        //necessary for CSVToBeanReader use builder
     }
 
-    private SearchQuery(SearchQueryBuilder builder) {
+    private ScrapeQuery(ScrapeQueryBuilder builder) {
         this.pk = IdCounter.createId();
         this.city = builder.city;
-        this.priceFrom = builder.priceFrom;
         this.priceTo = builder.priceTo;
         this.queryName = builder.queryName;
+        this.space = builder.space;
+        this.radius = builder.radius;
     }
 
     @Override
@@ -56,12 +63,12 @@ public class SearchQuery implements Entity {
         this.city = city;
     }
 
-    public Double getPriceFrom() {
-        return priceFrom;
+    public Integer getRadius() {
+        return radius;
     }
 
-    public void setPriceFrom(Double priceFrom) {
-        this.priceFrom = priceFrom;
+    public void setRadius(Integer radius) {
+        this.radius = radius;
     }
 
     public Double getPriceTo() {
@@ -80,41 +87,56 @@ public class SearchQuery implements Entity {
         this.queryName = queryName;
     }
 
+    public Integer getSpace() {
+        return space;
+    }
 
-    public static class SearchQueryBuilder{
+    public void setSpace(Integer space) {
+        this.space = space;
+    }
+
+
+    public static class ScrapeQueryBuilder {
         private String city;
-        private Double priceFrom;
         private Double priceTo;
         private Comparable<?> pk;
         private String queryName;
+        private Integer space;
+        private Integer radius;
 
-        public SearchQueryBuilder city(String city){
+        public ScrapeQueryBuilder city(String city){
             this.city = city;
             return this;
         }
 
-        public SearchQueryBuilder queryName(String queryName){
+        public ScrapeQueryBuilder queryName(String queryName){
             this.queryName = queryName;
             return this;
         }
 
-        public SearchQueryBuilder priceFrom(Double priceFrom){
-            this.priceFrom = priceFrom;
+        public ScrapeQueryBuilder radius(Integer radius){
+            this.radius = radius;
             return this;
         }
 
-        public SearchQueryBuilder priceTo(Double priceTo){
+        public ScrapeQueryBuilder priceTo(Double priceTo){
             this.priceTo = priceTo;
             return this;
         }
-        public SearchQueryBuilder validate() throws ValidationException {
-           //validation
-           return this;
+
+        public ScrapeQueryBuilder space(Integer space){
+            this.space = space;
+            return this;
         }
 
+        private void validateScrapeQuery(ScrapeQuery scrapeQuery) throws ValidationError {
+            //todo validate query.
+        }
 
-        public SearchQuery build(){
-            return new SearchQuery(this);
+        public ScrapeQuery build() throws ValidationError {
+            ScrapeQuery query = new ScrapeQuery(this);
+            validateScrapeQuery(query);
+            return new ScrapeQuery(this);
         }
 
     }
