@@ -23,10 +23,10 @@ public class ScrapeQuery implements Entity {
     private Double priceTo;
 
     @CsvBindByName(column = "space")
-    private Integer space;
+    private Double space;
 
     @CsvBindByName(column = "radius")
-    private Integer radius;
+    private Double radius;
 
 
     /**
@@ -63,13 +63,6 @@ public class ScrapeQuery implements Entity {
         this.city = city;
     }
 
-    public Integer getRadius() {
-        return radius;
-    }
-
-    public void setRadius(Integer radius) {
-        this.radius = radius;
-    }
 
     public Double getPriceTo() {
         return priceTo;
@@ -87,22 +80,29 @@ public class ScrapeQuery implements Entity {
         this.queryName = queryName;
     }
 
-    public Integer getSpace() {
+    public Double getSpace() {
         return space;
     }
 
-    public void setSpace(Integer space) {
+    public void setSpace(Double space) {
         this.space = space;
     }
 
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
 
     public static class ScrapeQueryBuilder {
         private String city;
         private Double priceTo;
         private Comparable<?> pk;
         private String queryName;
-        private Integer space;
-        private Integer radius;
+        private Double space;
+        private Double radius;
 
         public ScrapeQueryBuilder city(String city){
             this.city = city;
@@ -114,7 +114,7 @@ public class ScrapeQuery implements Entity {
             return this;
         }
 
-        public ScrapeQueryBuilder radius(Integer radius){
+        public ScrapeQueryBuilder radius(Double radius){
             this.radius = radius;
             return this;
         }
@@ -124,18 +124,13 @@ public class ScrapeQuery implements Entity {
             return this;
         }
 
-        public ScrapeQueryBuilder space(Integer space){
+        public ScrapeQueryBuilder space(Double space){
             this.space = space;
             return this;
         }
 
-        private void validateScrapeQuery(ScrapeQuery scrapeQuery) throws ValidationError {
-            //todo validate query.
-        }
-
-        public ScrapeQuery build() throws ValidationError {
+        public ScrapeQuery build() {
             ScrapeQuery query = new ScrapeQuery(this);
-            validateScrapeQuery(query);
             return new ScrapeQuery(this);
         }
 

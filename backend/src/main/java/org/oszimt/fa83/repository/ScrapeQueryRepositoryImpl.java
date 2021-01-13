@@ -55,7 +55,7 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     public void remove(Comparable<?> pk) {
         this.repository.remove(pk);
     }
-
+    @Override
     public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         this.fileWriter.write(new ArrayList<>(this.repository.values()));
     }

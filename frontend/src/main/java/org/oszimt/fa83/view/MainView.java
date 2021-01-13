@@ -7,9 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import org.oszimt.fa83.StageController;
 import org.oszimt.fa83.definition.Layout;
+import org.oszimt.fa83.emailhandler.EmailSupplier;
+import org.oszimt.fa83.emailhandler.MainController;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.pojo.ValidationError;
 import org.oszimt.fa83.repository.ScrapeQueryFileWriter;
@@ -30,8 +33,10 @@ public class MainView extends AbstractView {
     @FXML
     private ComboBox<ScrapeQuery> queryComboBox;
 
-    private final ScrapeQueryRepository repository = (ScrapeQueryRepository) ScrapeQueryRepositoryImpl.getInstance();
+    @FXML
+    private TextField email;
 
+    private MainController controller = MainController.getInstance();
 
     public void initialize() throws ValidationError {
 
@@ -39,8 +44,8 @@ public class MainView extends AbstractView {
         ScrapeQuery query = new ScrapeQuery.ScrapeQueryBuilder()
                 .queryName("Berlin 1")
                 .city("Berlin")
-                .radius(15)
-                .space(40)
+                .radius(15D)
+                .space(40D)
                 .priceTo(700D)
                 .build();
         List<ScrapeQuery> queries = new ArrayList<>();
@@ -52,7 +57,7 @@ public class MainView extends AbstractView {
             callError(e);
         }
 
-        ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(repository.findAll());
+        ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
         queryComboBox.itemsProperty().setValue(queryList);
         convertComboDisplayList();
     }
@@ -60,7 +65,9 @@ public class MainView extends AbstractView {
 
     @FXML
     private void switchToQuerySetup(){
+        EmailSupplier.getInstance().setEmail(email.getText());
         StageController.getInstance().setRoot(Layout.QUERY);
+
     }
 
 

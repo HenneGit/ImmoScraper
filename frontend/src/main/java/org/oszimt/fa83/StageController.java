@@ -47,20 +47,26 @@ public class StageController {
         }
     }
 
-    public void callErrorLayout(final Throwable exception){
+    public void callErrorLayout(final Exception exception){
         Parent root = null;
         try {
             root = loadFXML(Layout.ERROR.getFileName());
         } catch (IOException e) {
             System.exit(1);
         }
+
+
         ErrorView view = loader.getController();
         StringWriter writer = new StringWriter();
         PrintWriter pw = new PrintWriter(writer);
-        exception.printStackTrace(pw);
+        if (exception instanceof ValidationException){
+            ValidationException ex = (ValidationException) exception;
+            //set exception text
+        } else {
+            exception.printStackTrace(pw);
+        }
         view.setMessage(writer.toString());
         view.initStage(root);
-        //load error view and set error.
 
 
     }

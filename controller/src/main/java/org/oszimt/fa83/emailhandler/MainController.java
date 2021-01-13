@@ -1,14 +1,66 @@
 package org.oszimt.fa83.emailhandler;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.pojo.ScrapeQuery;
+import org.oszimt.fa83.repository.ScrapeQueryRepositoryImpl;
+import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
+import scraper.ScrapeResultPojo;
+import scraper.Scraper;
 
-import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.Collection;
 
-public interface MainController {
+public class MainController  {
 
-    void startScraping(ScrapeQuery query) throws MessagingException;
+    private final Scraper scraper = new Scraper();
+    private final EmailHandler emailHandler = new EmailHandler();
+    private static final MainController INSTANCE = new MainController();
+    private final ScrapeQueryRepository repository = (ScrapeQueryRepository) ScrapeQueryRepositoryImpl.getInstance();
+    private ScrapeQuery activeQuery;
 
-    void sendEmail();
+    private MainController(){
+        //hide constructor.
+    }
+
+    public static MainController getInstance(){
+        return INSTANCE;
+    }
+
+    public void createScrapeQuery(ScrapeQuery query){
+        repository.create(query);
+    }
+
+    public Collection<ScrapeQuery> getScrapeQueries(){
+        return repository.findAll();
+    }
+
+    public void removeQuery(Comparable<?> pk){
+        repository.remove(pk);
+    }
+
+    public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
+        repository.write();
+    }
 
 
+
+    public void startScraping(ScrapeQuery query) throws Exception {
+        String email = EmailSupplier.getInstance().getEmail();
+        if (email == null){
+            throw new Exception("Kein Email angegeben");
+        }
+        //logic for sending a new result
+        ScrapeResultPojo scrape = scraper.scrape(query);
+        emailHandler.createEmailMessage(email, scrape.getBody(), scrape.getBody());
+
+    }
+
+    public ScrapeQuery getActiveQuery() {
+        return activeQuery;
+    }
+
+    public void setActiveQuery(ScrapeQuery activeQuery) {
+        this.activeQuery = activeQuery;
+    }
 }
