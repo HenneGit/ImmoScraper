@@ -5,15 +5,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import org.oszimt.fa83.StageController;
 import org.oszimt.fa83.definition.Layout;
-import org.oszimt.fa83.emailhandler.EmailSupplier;
 import org.oszimt.fa83.emailhandler.MainController;
 import org.oszimt.fa83.emailhandler.ValidationException;
 import org.oszimt.fa83.pojo.ScrapeQuery;
-import org.oszimt.fa83.repository.ScrapeQueryRepositoryImpl;
-import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
-
-import javax.mail.MessagingException;
-import java.lang.management.ManagementFactory;
 
 public class QuerySetupView extends AbstractView {
 
@@ -53,27 +47,9 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private void startScraping() {
-        StringBuilder builder = new StringBuilder();
-        Double priceToParsed = parseDouble(priceTo.getText(), "Preis bis", builder);
-        String cityText = city.getText();
-        Double radiusParsed = parseDouble(radius.getText(), "Radius", builder);
-        Double spaceParsed = parseDouble(space.getText(), "Radius", builder);
-        String queryNameText = queryName.getText();
-
-        if (priceToParsed == null || radiusParsed == null || spaceParsed == null) {
-            callError(new ValidationException("Eingabefehler", builder.toString()));
-            return;
-        }
-        ScrapeQuery query = new ScrapeQuery.ScrapeQueryBuilder()
-                .queryName(queryNameText)
-                .city(cityText)
-                .radius(radiusParsed)
-                .space(spaceParsed)
-                .priceTo(priceToParsed)
-                .build();
-
+        ScrapeQuery scrapeQuery = setUpScrapeQuery();
         try {
-            MainController.getInstance().startScraping(query);
+            controller.startScraping(scrapeQuery);
         } catch (Exception e) {
             callError(e);
         }
@@ -84,7 +60,7 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private void switchToMain() {
-
+        setUpScrapeQuery();
         StageController.getInstance().setRoot(Layout.MAIN);
 
     }
@@ -103,6 +79,33 @@ public class QuerySetupView extends AbstractView {
             return null;
         }
         return parsed;
+    }
+
+    private ScrapeQuery setUpScrapeQuery(){
+        StringBuilder builder = new StringBuilder();
+        Double priceToParsed = parseDouble(priceTo.getText(), "Preis bis", builder);
+        String cityText = city.getText();
+        Double radiusParsed = parseDouble(radius.getText(), "Radius", builder);
+        Double spaceParsed = parseDouble(space.getText(), "Radius", builder);
+        String queryNameText = queryName.getText();
+
+        if (priceToParsed == null || radiusParsed == null || spaceParsed == null) {
+            callError(new ValidationException("Eingabefehler", builder.toString()));
+            return null;
+        }
+        ScrapeQuery query = new ScrapeQuery.ScrapeQueryBuilder()
+                .queryName(queryNameText)
+                .city(cityText)
+                .radius(radiusParsed)
+                .space(spaceParsed)
+                .priceTo(priceToParsed)
+                .build();
+        try {
+            controller.createScrapeQuery(query);
+        } catch (ValidationException e) {
+            callError(e);
+        }
+        return query;
     }
 
 }

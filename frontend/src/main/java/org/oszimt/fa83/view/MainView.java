@@ -66,10 +66,10 @@ public class MainView extends AbstractView {
     @FXML
     private void switchToQuerySetup(){
         EmailSupplier.getInstance().setEmail(email.getText());
+        controller.setActiveQuery(queryComboBox.getValue());
         StageController.getInstance().setRoot(Layout.QUERY);
 
     }
-
 
     private void convertComboDisplayList() {
         queryComboBox.setConverter(new StringConverter<>() {

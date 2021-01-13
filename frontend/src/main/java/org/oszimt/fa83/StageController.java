@@ -1,10 +1,13 @@
 package org.oszimt.fa83;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.oszimt.fa83.definition.Layout;
+import org.oszimt.fa83.emailhandler.MainController;
 import org.oszimt.fa83.view.ErrorView;
 
 import java.io.IOException;
@@ -19,6 +22,7 @@ public class StageController {
     private Scene scene;
     private Stage stage;
     private FXMLLoader loader;
+    private MainController controller = MainController.getInstance();
 
     public static StageController getInstance(){
         return INSTANCE;
@@ -28,6 +32,15 @@ public class StageController {
 
         scene = new Scene(loadFXML(DEFAULT_LAYOUT.getFileName()));
         this.stage = window;
+        stage.setOnCloseRequest(event -> {
+            System.out.println("Stage is closing");
+            try {
+                controller.write();
+            } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
+                callErrorLayout(e);
+            }
+        });
+
         window.setTitle("ImmoScraper");
         window.setScene(scene);
         window.show();
@@ -47,6 +60,8 @@ public class StageController {
         }
     }
 
+
+
     public void callErrorLayout(final Exception exception){
         Parent root = null;
         try {
@@ -54,8 +69,6 @@ public class StageController {
         } catch (IOException e) {
             System.exit(1);
         }
-
-
         ErrorView view = loader.getController();
         StringWriter writer = new StringWriter();
         PrintWriter pw = new PrintWriter(writer);
@@ -67,8 +80,6 @@ public class StageController {
         }
         view.setMessage(writer.toString());
         view.initStage(root);
-
-
     }
 
 }

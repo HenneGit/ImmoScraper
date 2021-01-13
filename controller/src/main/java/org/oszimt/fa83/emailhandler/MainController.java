@@ -10,6 +10,7 @@ import scraper.Scraper;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class MainController  {
 
@@ -27,8 +28,13 @@ public class MainController  {
         return INSTANCE;
     }
 
-    public void createScrapeQuery(ScrapeQuery query){
-        repository.create(query);
+    public void createScrapeQuery(ScrapeQuery query) throws ValidationException {
+        if (!queryNameIsUnique(query)){
+            throw new ValidationException("Fehler", "Name des Auftrags schon vorhanden");
+        } else {
+            repository.create(query);
+
+        }
     }
 
     public Collection<ScrapeQuery> getScrapeQueries(){
@@ -62,5 +68,9 @@ public class MainController  {
 
     public void setActiveQuery(ScrapeQuery activeQuery) {
         this.activeQuery = activeQuery;
+    }
+
+    private boolean queryNameIsUnique(ScrapeQuery s){
+        return getScrapeQueries().stream().filter(q -> q.getQueryName().equals(s.getQueryName())).collect(Collectors.toList()).size() == 0;
     }
 }
