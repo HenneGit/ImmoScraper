@@ -1,5 +1,7 @@
 package org.oszimt.fa83.view;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -8,6 +10,8 @@ import org.oszimt.fa83.definition.Layout;
 import org.oszimt.fa83.emailhandler.MainController;
 import org.oszimt.fa83.emailhandler.ValidationException;
 import org.oszimt.fa83.pojo.ScrapeQuery;
+
+import java.io.IOException;
 
 public class QuerySetupView extends AbstractView {
 
@@ -60,7 +64,6 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private void switchToMain() {
-        setUpScrapeQuery();
         StageController.getInstance().setRoot(Layout.MAIN);
 
     }
@@ -102,8 +105,11 @@ public class QuerySetupView extends AbstractView {
                 .build();
         try {
             controller.createScrapeQuery(query);
+            controller.write();
         } catch (ValidationException e) {
             callError(e);
+        } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
+            e.printStackTrace();
         }
         return query;
     }

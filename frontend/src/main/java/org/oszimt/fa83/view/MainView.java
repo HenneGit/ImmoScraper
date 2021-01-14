@@ -40,23 +40,6 @@ public class MainView extends AbstractView {
 
     public void initialize() throws ValidationError {
 
-        ScrapeQueryFileWriter writer = ScrapeQueryFileWriter.getInstance();
-        ScrapeQuery query = new ScrapeQuery.ScrapeQueryBuilder()
-                .queryName("Berlin 1")
-                .city("Berlin")
-                .radius(15D)
-                .space(40D)
-                .priceTo(700D)
-                .build();
-        List<ScrapeQuery> queries = new ArrayList<>();
-        queries.add(query);
-
-        try {
-            writer.write(queries);
-        } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
-            callError(e);
-        }
-
         ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
         queryComboBox.itemsProperty().setValue(queryList);
         convertComboDisplayList();
