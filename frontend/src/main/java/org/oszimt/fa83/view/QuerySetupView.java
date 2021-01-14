@@ -52,7 +52,6 @@ public class QuerySetupView extends AbstractView {
     private final MainController controller = MainController.getInstance();
 
     public void initialize() {
-        //todo fill listbox and fields with query.
         fillChoiceBox();
         ScrapeQuery activeQuery = controller.getActiveQuery();
         if (activeQuery != null) {
@@ -61,6 +60,7 @@ public class QuerySetupView extends AbstractView {
             space.setText(activeQuery.getSpace().toString());
             queryName.setText(activeQuery.getQueryName());
             priceTo.setText(activeQuery.getPriceTo().toString());
+            //todo set value from query.
             rooms.setValue(activeQuery.getRoomSize());
         }
     }
@@ -74,8 +74,6 @@ public class QuerySetupView extends AbstractView {
 //        } catch (Exception e) {
 //            callError(e);
 //        }
-        //todo set rooms from enum
-        rooms.getValue();
 
     }
 
@@ -100,8 +98,10 @@ public class QuerySetupView extends AbstractView {
     private void createQuery(){
 
         try {
-            controller.createScrapeQuery(setUpScrapeQuery());
+            ScrapeQuery scrapeQuery = setUpScrapeQuery();
+            controller.createScrapeQuery(scrapeQuery);
             controller.write();
+            controller.setActiveQuery(scrapeQuery);
             textArea.setText(queryName.getText() + " wurde gespeichert");
 
         } catch (ValidationException | CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
@@ -114,7 +114,6 @@ public class QuerySetupView extends AbstractView {
             if (toBeParsed != null) {
                 parsed = Double.parseDouble(priceTo.getText());
             }
-
         } catch (Exception e) {
             builder.append(field).append(" muss eine Nummer enthalten");
             builder.append("\n");

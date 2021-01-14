@@ -2,7 +2,7 @@ package org.oszimt.fa83.definition;
 
 public enum RoomSize {
 
-    NEVERMIND("egal"), ONE("ab 1 Zimmer"),ONE_HALF("ab 1,5 Zimmer "), TWO("2 Zimmer"), TWO_HALF("2,5 Zimmer"), THREE("ab drei Zimmer"),
+    NEVERMIND("egal"), ONE("ab 1 Zimmer"),ONE_HALF("ab 1,5 Zimmer "), TWO("ab 2 Zimmer"), TWO_HALF("ab 2,5 Zimmer"), THREE("ab drei Zimmer"),
     THREE_HALF ("ab 3,5 Zimmer"), FOUR("ab 4 Zimmer"), FIVE("ab 5 Zimmer");
 
     public String getDescription() {
