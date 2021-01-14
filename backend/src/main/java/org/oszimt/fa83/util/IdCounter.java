@@ -8,7 +8,7 @@ public final class IdCounter {
         //hide constructor
     }
 
-    public static Comparable<?> createId(){
-        return UUID.randomUUID();
+    public static String createId(){
+        return UUID.randomUUID().toString();
     }
 }
