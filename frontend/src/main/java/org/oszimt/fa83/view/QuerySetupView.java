@@ -1,5 +1,7 @@
 package org.oszimt.fa83.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import java.io.IOException;
 
 public class QuerySetupView extends AbstractView {
 
+    ObservableList<String> roomsList = FXCollections.observableArrayList();
 
     @FXML
     private TextField priceTo;
@@ -38,6 +41,7 @@ public class QuerySetupView extends AbstractView {
 
     public void initialize() {
         //todo fill listbox and fields with query.
+        fillChoiceBox();
         ScrapeQuery activeQuery = controller.getActiveQuery();
         if (activeQuery != null) {
             city.setText(activeQuery.getCity());
@@ -58,7 +62,7 @@ public class QuerySetupView extends AbstractView {
             callError(e);
         }
         //todo set rooms from enum
-        //rooms.getValue();
+        rooms.getValue();
 
     }
 
@@ -112,6 +116,18 @@ public class QuerySetupView extends AbstractView {
             e.printStackTrace();
         }
         return query;
+    }
+
+    private void fillChoiceBox () {
+        String egal ="egal";
+        String eins ="ab ein Zimmer";
+        String zwei ="ab zwei Zimmer";
+        String drei ="ab drei Zimmer";
+        String vier ="ab vier Zimmer";
+        String fünf ="ab fünf Zimmer";
+        String sechs ="ab sechs Zimmer";
+        roomsList.addAll(egal,eins,zwei,drei,vier,fünf,sechs);
+        rooms.getItems().addAll(roomsList);
     }
 
 }
