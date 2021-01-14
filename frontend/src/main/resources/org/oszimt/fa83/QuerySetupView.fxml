@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="320.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.oszimt.fa83.view.QuerySetupView">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="320.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.oszimt.fa83.view.QuerySetupView">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="8.0" prefHeight="35.0" prefWidth="52.0" text="ImmoScraper" textAlignment="CENTER" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
          <font>
@@ -18,13 +18,13 @@
       <TextField fx:id="priceTo" layoutX="14.0" layoutY="131.0" prefHeight="35.0" prefWidth="237.0" promptText="Preisgrenze" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="409.0" />
       <TextField fx:id="radius" layoutX="14.0" layoutY="199.0" prefHeight="35.0" prefWidth="237.0" promptText="Umkreis" AnchorPane.leftAnchor="12.0" />
       <TextField fx:id="space" layoutX="264.0" layoutY="200.0" prefHeight="35.0" prefWidth="169.0" promptText="Fläche" AnchorPane.leftAnchor="268.0" AnchorPane.rightAnchor="12.0" />
-      <ChoiceBox fx:id="rooms" layoutX="268.0" layoutY="131.0" prefHeight="35.0" prefWidth="169.0" AnchorPane.leftAnchor="268.0" AnchorPane.rightAnchor="12.0" />
+      <ChoiceBox fx:id="rooms" layoutX="324.0" layoutY="131.0" prefHeight="35.0" prefWidth="324.0" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="12.0" />
       <TextField fx:id="queryName" layoutX="14.0" layoutY="267.0" prefHeight="35.0" prefWidth="380.0" promptText="Name der Anfrage" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="268.0" />
       <Button layoutX="411.0" layoutY="267.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Speichern" AnchorPane.leftAnchor="411.0" AnchorPane.rightAnchor="141.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="startScraping" onAction="#startScraping" layoutX="404.0" layoutY="267.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Suchen" AnchorPane.rightAnchor="12.0">
+      <Button fx:id="startScraping" layoutX="404.0" layoutY="267.0" mnemonicParsing="false" onAction="#startScraping" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Suchen" AnchorPane.rightAnchor="12.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
@@ -33,5 +33,6 @@
             <Font size="14.0" />
          </font>
       </Button>
+      <Label layoutX="268.0" layoutY="134.0" prefHeight="30.0" prefWidth="49.0" text="Zimmer" />
    </children>
 </AnchorPane>
