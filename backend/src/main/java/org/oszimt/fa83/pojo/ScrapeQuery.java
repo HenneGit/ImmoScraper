@@ -28,11 +28,13 @@ public class ScrapeQuery implements Entity {
     @CsvBindByName(column = "radius")
     private Double radius;
 
+    @CsvBindByName(column = "roomSize")
+    private String roomSize;
 
     /**
      * use for bean creation only. To create new SrapeQuery object use {@link ScrapeQueryBuilder}.
      */
-    public ScrapeQuery(){
+    public ScrapeQuery() {
         //necessary for CSVToBeanReader use builder
     }
 
@@ -49,10 +51,18 @@ public class ScrapeQuery implements Entity {
     public String getPk() {
         return pk;
     }
+
     public void setPk(String pk) {
-        this.pk =pk;
+        this.pk = pk;
     }
 
+    public String getRoomSize() {
+        return roomSize;
+    }
+
+    public void setRoomSize(String roomSize) {
+        this.roomSize = roomSize;
+    }
 
     public String getCity() {
         return city;
@@ -102,34 +112,40 @@ public class ScrapeQuery implements Entity {
         private String queryName;
         private Double space;
         private Double radius;
+        private String roomSize;
 
-        public ScrapeQueryBuilder city(String city){
+        public ScrapeQueryBuilder city(String city) {
             this.city = city;
             return this;
         }
 
-        public ScrapeQueryBuilder queryName(String queryName){
+        public ScrapeQueryBuilder queryName(String queryName) {
             this.queryName = queryName;
             return this;
         }
 
-        public ScrapeQueryBuilder radius(Double radius){
+        public ScrapeQueryBuilder radius(Double radius) {
             this.radius = radius;
             return this;
         }
 
-        public ScrapeQueryBuilder priceTo(Double priceTo){
+        public ScrapeQueryBuilder priceTo(Double priceTo) {
             this.priceTo = priceTo;
             return this;
         }
 
-        public ScrapeQueryBuilder space(Double space){
+        public ScrapeQueryBuilder space(Double space) {
             this.space = space;
             return this;
         }
 
-        public ScrapeQueryBuilder pk(String pk){
+        public ScrapeQueryBuilder pk(String pk) {
             this.pk = pk;
+            return this;
+        }
+
+        public ScrapeQueryBuilder roomSize(String roomSize) {
+            this.roomSize = roomSize;
             return this;
         }
 

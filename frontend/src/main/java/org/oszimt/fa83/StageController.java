@@ -32,6 +32,9 @@ public class StageController {
 
         scene = new Scene(loadFXML(DEFAULT_LAYOUT.getFileName()));
         this.stage = window;
+        stage.setResizable(false);
+        stage.setMinHeight(320D);
+        stage.setMinWidth(660D);
         stage.setOnCloseRequest(event -> {
             System.out.println("Stage is closing");
             try {

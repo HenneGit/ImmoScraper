@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -14,17 +15,17 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="city" layoutX="14.0" layoutY="58.0" prefHeight="40.0" prefWidth="182.0" promptText="Ort, PLZ, Stadt" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="64.0" />
-      <TextField fx:id="priceTo" layoutX="14.0" layoutY="131.0" prefHeight="35.0" prefWidth="237.0" promptText="Preisgrenze" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="409.0" />
-      <TextField fx:id="radius" layoutX="14.0" layoutY="199.0" prefHeight="35.0" prefWidth="237.0" promptText="Umkreis" AnchorPane.leftAnchor="12.0" />
-      <TextField fx:id="space" layoutX="264.0" layoutY="200.0" prefHeight="35.0" prefWidth="169.0" promptText="Fläche" AnchorPane.leftAnchor="268.0" AnchorPane.rightAnchor="12.0" />
-      <ChoiceBox fx:id="rooms" layoutX="324.0" layoutY="131.0" prefHeight="35.0" prefWidth="324.0" AnchorPane.leftAnchor="324.0" AnchorPane.rightAnchor="12.0" />
-      <TextField fx:id="queryName" layoutX="14.0" layoutY="267.0" prefHeight="35.0" prefWidth="380.0" promptText="Name der Anfrage" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="268.0" />
-      <Button layoutX="411.0" layoutY="267.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Speichern" AnchorPane.leftAnchor="411.0" AnchorPane.rightAnchor="141.0">
+      <TextField fx:id="priceTo" layoutX="14.0" layoutY="164.0" prefHeight="40.0" prefWidth="120.0" promptText="Preisgrenze" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="538.0" />
+      <TextField fx:id="radius" layoutX="273.0" layoutY="164.0" prefHeight="40.0" prefWidth="120.0" promptText="Umkreis" AnchorPane.leftAnchor="273.0" />
+      <TextField fx:id="space" layoutX="139.0" layoutY="164.0" prefHeight="40.0" prefWidth="120.0" promptText="Fläche" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="401.0" />
+      <ChoiceBox fx:id="rooms" layoutX="71.0" layoutY="216.0" prefHeight="35.0" prefWidth="323.0" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="266.0" />
+      <TextField fx:id="city" layoutX="14.0" layoutY="109.0" prefHeight="40.0" prefWidth="180.0" promptText="Ort, PLZ, Stadt" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="467.0" AnchorPane.topAnchor="109.0" />
+      <TextField fx:id="queryName" layoutX="14.0" layoutY="59.0" prefHeight="35.0" prefWidth="380.0" promptText="Name der Anfrage" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="266.0" />
+      <Button fx:id="createQuery" onAction="#createQuery" layoutX="17.0" layoutY="267.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Speichern" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="535.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="startScraping" layoutX="404.0" layoutY="267.0" mnemonicParsing="false" onAction="#startScraping" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Suchen" AnchorPane.rightAnchor="12.0">
+      <Button fx:id="startScraping" layoutX="538.0" layoutY="267.0" mnemonicParsing="false" onAction="#startScraping" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Suchen" AnchorPane.rightAnchor="14.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
@@ -33,6 +34,13 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="268.0" layoutY="134.0" prefHeight="30.0" prefWidth="49.0" text="Zimmer" />
+      <Label layoutX="14.0" layoutY="218.0" prefHeight="30.0" prefWidth="49.0" text="Zimmer" />
+      <Button fx:id="removeQuery" layoutX="286.0" layoutY="267.0" mnemonicParsing="false" onAction="#removeQuery" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Löschen">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <TextArea fx:id="textArea" layoutX="406.0" layoutY="59.0" prefHeight="193.0" prefWidth="239.0" />
+      <TextField fx:id="email" layoutX="214.0" layoutY="109.0" prefHeight="40.0" prefWidth="180.0" promptText="Email" />
    </children>
 </AnchorPane>
