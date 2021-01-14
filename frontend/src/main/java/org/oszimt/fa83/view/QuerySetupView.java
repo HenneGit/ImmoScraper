@@ -56,11 +56,11 @@ public class QuerySetupView extends AbstractView {
     @FXML
     private void startScraping() {
         ScrapeQuery scrapeQuery = setUpScrapeQuery();
-        try {
-            controller.startScraping(scrapeQuery);
-        } catch (Exception e) {
-            callError(e);
-        }
+//        try {
+//            controller.startScraping(scrapeQuery);
+//        } catch (Exception e) {
+//            callError(e);
+//        }
         //todo set rooms from enum
         rooms.getValue();
 
@@ -106,6 +106,7 @@ public class QuerySetupView extends AbstractView {
                 .radius(radiusParsed)
                 .space(spaceParsed)
                 .priceTo(priceToParsed)
+
                 .build();
         try {
             controller.createScrapeQuery(query);

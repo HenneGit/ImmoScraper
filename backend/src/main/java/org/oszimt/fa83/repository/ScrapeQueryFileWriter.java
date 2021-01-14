@@ -13,6 +13,7 @@ import org.oszimt.fa83.repository.api.GenericCSVWriter;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,13 +39,12 @@ public class ScrapeQueryFileWriter {
      *
      * @return collection of all search queries saved in file.
      */
-    Collection<ScrapeQuery> findAll() throws URISyntaxException {
+    Collection<ScrapeQuery> findAll() throws IOException {
         URL url = getClass().getClassLoader().getResource(FILE);
         if (url != null) {
-            try (InputStreamReader reader = new InputStreamReader(url.openStream())) {
-                return genericWriter.getBeans(reader, ScrapeQuery.class);
-            } catch (IOException e) {
-                e.printStackTrace();
+            try (InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
+                Collection<ScrapeQuery> beans = genericWriter.getBeans(reader, ScrapeQuery.class);
+                return beans;
             }
         }
         return null;

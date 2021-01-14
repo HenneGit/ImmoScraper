@@ -14,7 +14,7 @@ public class ScrapeQuery implements Entity {
     private String queryName;
 
     @CsvBindByName(column = "pk")
-    private Comparable<?> pk;
+    private String pk;
 
     @CsvBindByName(column = "city")
     private String city;
@@ -37,7 +37,7 @@ public class ScrapeQuery implements Entity {
     }
 
     private ScrapeQuery(ScrapeQueryBuilder builder) {
-        this.pk = IdCounter.createId();
+        this.pk = builder.pk;
         this.city = builder.city;
         this.priceTo = builder.priceTo;
         this.queryName = builder.queryName;
@@ -46,14 +46,13 @@ public class ScrapeQuery implements Entity {
     }
 
     @Override
-    public Comparable<?> getPk() {
-        return null;
+    public String getPk() {
+        return pk;
+    }
+    public void setPk(String pk) {
+        this.pk =pk;
     }
 
-
-    public void setPk(Comparable<?> pk) {
-        this.pk = pk;
-    }
 
     public String getCity() {
         return city;
@@ -99,7 +98,7 @@ public class ScrapeQuery implements Entity {
     public static class ScrapeQueryBuilder {
         private String city;
         private Double priceTo;
-        private Comparable<?> pk;
+        private String pk;
         private String queryName;
         private Double space;
         private Double radius;
@@ -126,6 +125,11 @@ public class ScrapeQuery implements Entity {
 
         public ScrapeQueryBuilder space(Double space){
             this.space = space;
+            return this;
+        }
+
+        public ScrapeQueryBuilder pk(String pk){
+            this.pk = pk;
             return this;
         }
 

@@ -31,7 +31,10 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
     @Override
     public Comparable<?> create(ScrapeQuery query) {
-        Comparable<?> uuid = IdCounter.createId();
+        String uuid = (String) IdCounter.createId();
+        if (query.getPk() == null){
+            query.setPk(uuid);
+        }
         repository.put(uuid, query);
         return uuid;
     }
@@ -62,8 +65,9 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
     private void load() {
         try {
+            Collection<ScrapeQuery> all = fileWriter.findAll();
 
-            this.fileWriter.findAll().forEach(q -> this.repository.put(q.getPk(), q));
+            all.forEach(q -> this.repository.put(q.getPk(), q));
         } catch (Exception e){
             e.printStackTrace();
         }
