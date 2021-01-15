@@ -1,8 +1,6 @@
 # ImmoScraper
----
 
 ## Installation
----
 
 Für die Installation muss das Projekt heruntergeladen werden.\
 Um den ImmoScraper zu verwenden, wird ein Rechner mit **Java** (min. Java **Version 11**) benötigt.\
@@ -10,7 +8,7 @@ Um das Programm auszuführen muss die ausführbare **.jar-Datei** gestartet werd
 Nun sollte eine Anwendung erscheinen und das Programm ist bereit!
 
 ## Handbuch
----
+
 Wenn die ausführbare .jar-Datei gestartet wurde, sollte so ein Fenster erscheinen:
 
 ![alt text](./screenshots/ImmoScraper_Start.png "ImmoScraper - Startoberfläche")
