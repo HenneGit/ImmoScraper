@@ -52,13 +52,9 @@ public class MainController  {
 
 
     public void startScraping(ScrapeQuery query) throws Exception {
-        String email = EmailSupplier.getInstance().getEmail();
-        if (email == null){
-            throw new Exception("Kein Email angegeben");
-        }
         //logic for sending a new result
         ScrapeResultPojo scrape = scraper.scrape(query);
-        emailHandler.createEmailMessage(email, scrape.getBody(), scrape.getBody());
+        emailHandler.createEmailMessage(EmailSupplier.getInstance().getEmail(), scrape.getBody(), scrape.getBody());
 
     }
 

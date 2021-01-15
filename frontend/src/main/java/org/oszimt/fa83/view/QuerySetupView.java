@@ -52,6 +52,7 @@ public class QuerySetupView extends AbstractView {
     private final MainController controller = MainController.getInstance();
 
     public void initialize() {
+        email.setText(EmailSupplier.getInstance().getEmail());
         fillChoiceBox();
         ScrapeQuery activeQuery = controller.getActiveQuery();
         if (activeQuery != null) {
@@ -95,6 +96,14 @@ public class QuerySetupView extends AbstractView {
     }
 
     @FXML
+    private void save() throws Exception {
+        if (email == null){
+            throw new Exception("Keine Email angegeben");
+        }
+        createQuery();
+        EmailSupplier.getInstance().setEmail(email.getText());
+    }
+
     private void createQuery(){
 
         try {
@@ -150,5 +159,4 @@ public class QuerySetupView extends AbstractView {
         List<String> collect = Arrays.stream(RoomSize.values()).map(RoomSize::getDescription).collect(Collectors.toList());
         rooms.getItems().addAll(collect);
     }
-
 }
