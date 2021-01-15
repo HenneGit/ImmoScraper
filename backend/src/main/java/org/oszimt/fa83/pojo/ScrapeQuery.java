@@ -49,6 +49,7 @@ public class ScrapeQuery implements Entity {
         this.space = builder.space;
         this.radius = builder.radius;
         this.email = builder.email;
+        this.roomSize = builder.roomSize;
     }
 
     @Override
@@ -161,14 +162,13 @@ public class ScrapeQuery implements Entity {
             this.roomSize = roomSize;
             return this;
         }
+
         public ScrapeQueryBuilder email(String email) {
             this.email = email;
             return this;
         }
 
-
         public ScrapeQuery build() {
-            ScrapeQuery query = new ScrapeQuery(this);
             return new ScrapeQuery(this);
         }
 

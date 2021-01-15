@@ -57,9 +57,6 @@ public class QuerySetupView extends AbstractView {
     @FXML
     private ComboBox<ScrapeQuery> queryComboBox;
 
-
-
-
     private final MainController controller = MainController.getInstance();
 
     public void initialize() {
@@ -76,6 +73,7 @@ public class QuerySetupView extends AbstractView {
         });
         convertComboDisplayList();
         textArea.setEditable(false);
+        String name = rooms.getSelectionModel().selectedIndexProperty().getName();
 
     }
 
@@ -108,6 +106,7 @@ public class QuerySetupView extends AbstractView {
         } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
             callError(e);
         }
+        updateCombobox();
         textArea.setText(queryName.getText() + " wurde gelöscht");
     }
 
@@ -145,6 +144,7 @@ public class QuerySetupView extends AbstractView {
                 .roomSize(rooms.getValue())
                 .email(email.getText())
                 .build();
+
     }
 
     private Double parseDouble(String doubleToParse){
@@ -199,8 +199,7 @@ public class QuerySetupView extends AbstractView {
             }
             queryName.setText(activeQuery.getQueryName());
             city.setText(Objects.requireNonNull(activeQuery.getCity()));
-            //todo set value from query.
-            rooms.setValue(activeQuery.getRoomSize());
+            rooms.getSelectionModel().select(activeQuery.getRoomSize());
         }
 
     }
