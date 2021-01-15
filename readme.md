@@ -52,18 +52,3 @@ Der Controller sendet diesbezüglich dann eine E-Mail mit den Informationen an d
 ImmoScraper selbst spricht keine externen Schnittstellen an.\
 Aber damit ImmoScraper Informationen zu Wohnungen/Immobilien nach bestimmten Suchkriterien finden kann, muss eine Suchanfrage angelegt werden.\
 Damit eine Suchanfrage gespeichert wird und wiederverwendbar/bearbeitbar ist, wird die interne Schnittstelle **Repository** angesprochen. Durch das Ansprechen der Schnittstelle werden Funktionen im **Backend** aufgerufen, die die Informationen der Queries in einer **CSV-Datei** persistent abspeichern.
-
-
-JavaFx skd runterladen: 
-https://gluonhq.com/products/javafx/
-
-Dann neue Run Configuration anlegen: 
---> Application 
---> modulpath angeben
---> VM Options: 
-
---module-path /home/henne/apps/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml
-
-sollte dann laufen. 
-
-Scene Builder könnte beim Frontend bauen hilfreich sein. 
