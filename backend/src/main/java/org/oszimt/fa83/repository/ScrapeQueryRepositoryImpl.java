@@ -40,6 +40,19 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
 
     @Override
+    public ScrapeQuery update(ScrapeQuery query) {
+        ScrapeQuery scrapeQuery = this.repository.get(query.getPk());
+        scrapeQuery.setEmail(query.getEmail());
+        scrapeQuery.setQueryName(query.getQueryName());
+        scrapeQuery.setCity(query.getCity());
+        scrapeQuery.setRadius(query.getRadius());
+        scrapeQuery.setRadius(query.getPriceTo());
+        scrapeQuery.setRoomSize(query.getRoomSize());
+        scrapeQuery.setSpace(query.getSpace());
+        return scrapeQuery;
+    }
+
+    @Override
     public Collection<ScrapeQuery> findAll() {
 
         if (this.repository.size() == 0){

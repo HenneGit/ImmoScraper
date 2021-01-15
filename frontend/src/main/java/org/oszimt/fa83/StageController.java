@@ -18,7 +18,7 @@ public class StageController {
 
 
     private static final StageController INSTANCE = new StageController();
-    private static final Layout DEFAULT_LAYOUT = Layout.MAIN;
+    private static final Layout DEFAULT_LAYOUT = Layout.QUERY;
     private Scene scene;
     private Stage stage;
     private FXMLLoader loader;
@@ -55,15 +55,6 @@ public class StageController {
         return fxmlLoader.load();
     }
 
-    public void setRoot(final Layout layout){
-        try {
-            scene.setRoot(loadFXML(layout.getFileName()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 
     public void callErrorLayout(final Exception exception){
         Parent root = null;
@@ -77,11 +68,12 @@ public class StageController {
         PrintWriter pw = new PrintWriter(writer);
         if (exception instanceof ValidationException){
             ValidationException ex = (ValidationException) exception;
-            //set exception text
+            view.setMessage(ex.getReason());
+
         } else {
             exception.printStackTrace(pw);
+            view.setMessage(writer.toString());
         }
-        view.setMessage(writer.toString());
         view.initStage(root);
     }
 
