@@ -22,7 +22,7 @@ Beim Klick auf **Los!** erscheint eine neue Maske:
 
 Damit ImmoScraper etwas finden kann, werden hier ein paar **Informationen** zur gesuchten Wohnung/Immobilie benötigt.
 
-Beispiel:
+Beispiel:\
 ![alt text](./screenshots/ImmoScraper_Example.png "ImmoScraper - Beispiel")
 
 #### Suchanfrage speichern
@@ -41,10 +41,17 @@ Nun hat man die Möglichkeit seine Suchanfrage zu bearbeiten, sollte sich etwas 
 Ein Klick auf **Löschen** entfernt die jeweilige Suchanfrage wieder.
 ![alt text](./screenshots/ImmoScraper_Delete.png "ImmoScraper - Löschen")
 
-Mit einem Klick auf **Suchen** werden die Informationen aus den Feldern der Suchanfrage vom Controller aus an die ImmoScout API geschickt.\
-Die Scraping-Einheit von ImmoScraper sucht sich die nächsten Wohnungen/Immobilien mit den Kriterien heraus und gibt die Informationen zurück.
+Mit einem Klick auf **Suchen** werden die Informationen aus den Feldern der Suchanfrage als Query-String in den immoscout24-Link eingefügt.\
+*(z.B. www.immobilienscout24.de/Suche/de/ + searchQuery + /wohnung-mieten?enteredFrom=one_step_search" )*\
+
+Die Scraping-Einheit von ImmoScraper sucht sich die nächsten Wohnungen/Immobilien mit den jeweiligen Kriterien heraus und gibt die Informationen zurück.
 Der Controller sendet diesbezüglich dann eine E-Mail mit den Informationen an die angegebene E-Mail-Adresse.
 
+## Schnittstellen
+
+ImmoScraper selbst spricht keine externen Schnittstellen an.\
+Aber damit ImmoScraper Informationen zu Wohnungen/Immobilien nach bestimmten Suchkriterien finden kann, muss eine Suchanfrage angelegt werden.\
+Damit eine Suchanfrage gespeichert wird und wiederverwendbar/bearbeitbar ist, wird die interne Schnittstelle **Repository** angesprochen. Durch das Ansprechen der Schnittstelle werden Funktionen im **Backend** aufgerufen, die die Informationen der Queries in einer **CSV-Datei** persistent abspeichern.
 
 
 JavaFx skd runterladen: 
