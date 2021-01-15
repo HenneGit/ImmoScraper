@@ -69,11 +69,11 @@ public class QuerySetupView extends AbstractView {
     private void startScraping() {
         ScrapeQuery scrapeQuery = setUpScrapeQuery();
         EmailSupplier.getInstance().setEmail(email.getText());
-//        try {
-//            controller.startScraping(scrapeQuery);
-//        } catch (Exception e) {
-//            callError(e);
-//        }
+        try {
+            controller.startScraping(scrapeQuery);
+        } catch (Exception e) {
+            callError(e);
+        }
 
     }
 
