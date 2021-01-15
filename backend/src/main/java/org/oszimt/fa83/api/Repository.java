@@ -10,6 +10,8 @@ public interface Repository<ENTITY extends Entity> {
 
     Comparable<?> create(ENTITY t);
 
+    ENTITY update(ENTITY t);
+
     Collection<ENTITY> findAll();
 
     void remove(Comparable<?> pk);

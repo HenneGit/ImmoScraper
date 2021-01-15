@@ -2,7 +2,7 @@ package org.oszimt.fa83.emailhandler;
 
 public class EmailSupplier {
 
-    private String email;
+    private static String email;
     private static final EmailSupplier INSTANCE = new EmailSupplier();
 
     private EmailSupplier(){
@@ -13,7 +13,7 @@ public class EmailSupplier {
         return INSTANCE;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return email;
     }
 

@@ -31,6 +31,9 @@ public class ScrapeQuery implements Entity {
     @CsvBindByName(column = "roomSize")
     private String roomSize;
 
+    @CsvBindByName(column = "email")
+    private String email;
+
     /**
      * use for bean creation only. To create new SrapeQuery object use {@link ScrapeQueryBuilder}.
      */
@@ -45,11 +48,20 @@ public class ScrapeQuery implements Entity {
         this.queryName = builder.queryName;
         this.space = builder.space;
         this.radius = builder.radius;
+        this.email = builder.email;
     }
 
     @Override
     public String getPk() {
         return pk;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPk(String pk) {
@@ -113,6 +125,7 @@ public class ScrapeQuery implements Entity {
         private Double space;
         private Double radius;
         private String roomSize;
+        private String email;
 
         public ScrapeQueryBuilder city(String city) {
             this.city = city;
@@ -148,6 +161,11 @@ public class ScrapeQuery implements Entity {
             this.roomSize = roomSize;
             return this;
         }
+        public ScrapeQueryBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
 
         public ScrapeQuery build() {
             ScrapeQuery query = new ScrapeQuery(this);
