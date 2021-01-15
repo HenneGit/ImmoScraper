@@ -1,7 +1,7 @@
-#ImmoScraper
+# ImmoScraper
 ---
 
-##Installation
+## Installation
 ---
 
 Für die Installation muss das Projekt heruntergeladen werden.\
@@ -9,7 +9,7 @@ Um den ImmoScraper zu verwenden, wird ein Rechner mit **Java** (min. Java **Vers
 Um das Programm auszuführen muss die ausführbare **.jar-Datei** gestartet werden.\
 Nun sollte eine Anwendung erscheinen und das Programm ist bereit!
 
-##Handbuch
+## Handbuch
 ---
 Wenn die ausführbare .jar-Datei gestartet wurde, sollte so ein Fenster erscheinen:
 
@@ -17,7 +17,7 @@ Wenn die ausführbare .jar-Datei gestartet wurde, sollte so ein Fenster erschein
 
 Hier hat man die Möglichkeit mit **Los!** eine neue Suchanfrage zu einer Wohnung/Immobilie zu stellen oder eine bereits erstellte Suchanfrage zu bearbeiten.
 
-####Suchanfrage erstellen
+#### Suchanfrage erstellen
 Beim Klick auf **Los!** erscheint eine neue Maske:
 
 ![alt text](./screenshots/ImmoScraper_Query.png "ImmoScraper - Neue Suchanfrage")
@@ -27,7 +27,7 @@ Damit ImmoScraper etwas finden kann, werden hier ein paar **Informationen** zur 
 Beispiel:
 ![alt text](./screenshots/ImmoScraper_Example.png "ImmoScraper - Beispiel")
 
-####Suchanfrage speichern
+#### Suchanfrage speichern
 Ein Klick auf **Speichern** speichert die derzeit eingegebenen Informationen als Suchanfrage unter dem angegebenen Namen.
 ![alt text](./screenshots/ImmoScraper_Save.png "ImmoScraper - Speichern")
 
