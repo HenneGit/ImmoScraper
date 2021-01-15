@@ -7,6 +7,7 @@ import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 import org.oszimt.fa83.util.IdCounter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,15 +18,14 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
     private Map<Comparable<?>, ScrapeQuery> repository = new HashMap<>();
 
-    private static ScrapeQueryRepository instance = new ScrapeQueryRepositoryImpl();
+    private static final ScrapeQueryRepository instance = new ScrapeQueryRepositoryImpl();
 
-    private ScrapeQueryFileWriter fileWriter = ScrapeQueryFileWriter.getInstance();
+    private final ScrapeQueryFileWriter fileWriter = ScrapeQueryFileWriter.getInstance();
 
     private ScrapeQueryRepositoryImpl() {
-        load();
     }
 
-    public static Repository getInstance(){
+    public static ScrapeQueryRepository getInstance(){
         return instance;
     }
 
@@ -40,7 +40,10 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
 
     @Override
-    public ScrapeQuery update(ScrapeQuery query) {
+    public ScrapeQuery update(ScrapeQuery query) throws CSVNotFoundException {
+        if (this.repository.size() == 0){
+            load();
+        }
         ScrapeQuery scrapeQuery = this.repository.get(query.getPk());
         scrapeQuery.setEmail(query.getEmail());
         scrapeQuery.setQueryName(query.getQueryName());
@@ -53,7 +56,7 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
 
     @Override
-    public Collection<ScrapeQuery> findAll() {
+    public Collection<ScrapeQuery> findAll() throws CSVNotFoundException {
 
         if (this.repository.size() == 0){
             load();
@@ -63,7 +66,10 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
 
     @Override
-    public ScrapeQuery findByPk(Comparable<?> pk) {
+    public ScrapeQuery findByPk(Comparable<?> pk) throws CSVNotFoundException {
+        if (this.repository.size() == 0){
+            load();
+        }
        return this.repository.get(pk);
     }
 
@@ -76,14 +82,10 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
         this.fileWriter.write(new ArrayList<>(this.repository.values()));
     }
 
-    private void load() {
-        try {
+    private void load() throws CSVNotFoundException {
             Collection<ScrapeQuery> all = fileWriter.findAll();
-
             all.forEach(q -> this.repository.put(q.getPk(), q));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+
 
     }
 

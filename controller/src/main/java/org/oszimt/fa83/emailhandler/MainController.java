@@ -4,11 +4,13 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.ValidationException;
 import org.oszimt.fa83.pojo.ScrapeQuery;
+import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.repository.ScrapeQueryRepositoryImpl;
 import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 import scraper.ScrapeResultPojo;
 import scraper.Scraper;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
@@ -19,7 +21,7 @@ public class MainController {
     private final Scraper scraper = new Scraper();
     private final EmailHandler emailHandler = new EmailHandler();
     private static final MainController INSTANCE = new MainController();
-    private final ScrapeQueryRepository repository = (ScrapeQueryRepository) ScrapeQueryRepositoryImpl.getInstance();
+    private final ScrapeQueryRepository repository = ScrapeQueryRepositoryImpl.getInstance();
     private ScrapeQuery activeQuery;
 
     private MainController() {
@@ -30,7 +32,7 @@ public class MainController {
         return INSTANCE;
     }
 
-    public void createScrapeQuery(ScrapeQuery query) throws ValidationException {
+    public void createScrapeQuery(ScrapeQuery query) throws ValidationException, CSVNotFoundException {
         if (!queryNameIsUnique(query)) {
             if (this.activeQuery != null && !query.getQueryName().equals(this.activeQuery.getQueryName()))
                 throw new ValidationException("Name des Auftrags schon vorhanden");
@@ -42,7 +44,7 @@ public class MainController {
     }
 
 
-    public Collection<ScrapeQuery> getScrapeQueries() {
+    public Collection<ScrapeQuery> getScrapeQueries() throws CSVNotFoundException {
         return repository.findAll();
     }
 
@@ -74,7 +76,7 @@ public class MainController {
         this.activeQuery = activeQuery;
     }
 
-    private boolean queryNameIsUnique(ScrapeQuery s) {
+    private boolean queryNameIsUnique(ScrapeQuery s) throws CSVNotFoundException {
         return getScrapeQueries().stream().filter(q -> q.getQueryName().equals(s.getQueryName())).count() == 0;
     }
 }

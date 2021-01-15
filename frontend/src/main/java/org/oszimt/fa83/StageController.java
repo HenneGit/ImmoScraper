@@ -8,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.oszimt.fa83.definition.Layout;
 import org.oszimt.fa83.emailhandler.MainController;
+import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.view.ErrorView;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -70,7 +72,13 @@ public class StageController {
             ValidationException ex = (ValidationException) exception;
             view.setMessage(ex.getReason());
 
-        } else {
+        }
+        if (exception instanceof CSVNotFoundException){
+            CSVNotFoundException ex = (CSVNotFoundException) exception;
+            view.setMessage(ex.getMessage());
+
+        }
+        else {
             exception.printStackTrace(pw);
             view.setMessage(writer.toString());
         }
