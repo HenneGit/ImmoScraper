@@ -7,6 +7,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import org.apache.commons.io.FileUtils;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.repository.api.GenericCSVWriter;
 
@@ -40,11 +41,17 @@ public class ScrapeQueryFileWriter {
      * @return collection of all search queries saved in file.
      */
     Collection<ScrapeQuery> findAll() throws IOException {
-        URL url = getClass().getClassLoader().getResource(FILE);
+        File file = new File(FILE);
+        System.out.println(file.getAbsolutePath());
+        URL url;
+        if (!file.exists()){
+            url = getClass().getClassLoader().getResource(FILE);
+        } else {
+            url = file.toURI().toURL();
+        }
         if (url != null) {
             try (InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-                Collection<ScrapeQuery> beans = genericWriter.getBeans(reader, ScrapeQuery.class);
-                return beans;
+                return genericWriter.getBeans(reader, ScrapeQuery.class);
             }
         }
         return null;
@@ -56,10 +63,13 @@ public class ScrapeQueryFileWriter {
      */
     public void write(List<ScrapeQuery> all) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
         URL url = getClass().getClassLoader().getResource(FILE);
-
-        try (OutputStream out = new FileOutputStream(url.getFile());
-             Writer writer = new OutputStreamWriter(out,"UTF-8")) {
-            genericWriter.write(all, writer);
+        if (url != null) {
+            File dest = new File("");
+            FileUtils.copyURLToFile(url, dest);
+            try (OutputStream out = new FileOutputStream(url.getFile());
+                 Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
+                genericWriter.write(all, writer);
+            }
         }
     }
 }

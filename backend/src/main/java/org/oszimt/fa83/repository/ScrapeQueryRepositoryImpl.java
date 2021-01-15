@@ -31,7 +31,7 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
     @Override
     public Comparable<?> create(ScrapeQuery query) {
-        String uuid = (String) IdCounter.createId();
+        String uuid = IdCounter.createId();
         if (query.getPk() == null){
             query.setPk(uuid);
         }
