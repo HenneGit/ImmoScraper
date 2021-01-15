@@ -134,6 +134,7 @@ public class QuerySetupView extends AbstractView {
             validator.validate(getAllTextFields());
         } catch (ValidationException e) {
             callError(e);
+            return null;
         }
         return new ScrapeQuery.ScrapeQueryBuilder()
                 .queryName(queryName.getText())
