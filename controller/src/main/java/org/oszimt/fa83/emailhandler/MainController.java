@@ -11,6 +11,7 @@ import scraper.Scraper;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -61,8 +62,8 @@ public class MainController {
             email = EmailSupplier.getEmail();
         }
         //logic for sending a new result
-        ScrapeResultPojo scrape = scraper.scrape(query);
-        emailHandler.createEmailMessage(email, scrape.getBody(), scrape.getBody());
+        List<ScrapeResultPojo> scrape = scraper.scrape(query);
+        emailHandler.createEmailMessage(email, "body", "subject");
 
     }
 

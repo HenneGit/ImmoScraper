@@ -1,28 +1,36 @@
 package scraper;
 
-public class ScrapeResultPojo {
+import org.oszimt.fa83.api.Entity;
 
-    String subject;
-    String body;
+public class ScrapeResultPojo implements Entity {
 
-    public ScrapeResultPojo(String subject, String body) {
-        this.subject = subject;
-        this.body = body;
+    String url;
+    String oid;
+
+
+    public ScrapeResultPojo(String url, String oid) {
+        this.url = url;
+        this.oid = oid;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getUrl() {
+        return this.url;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getBody() {
-        return body;
+    public String getOid() {
+        return this.oid;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    @Override
+    public String getPk() {
+        return this.oid;
     }
 }
