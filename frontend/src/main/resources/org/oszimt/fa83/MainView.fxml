@@ -7,8 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.TextField?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.oszimt.fa83.view.MainView">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.oszimt.fa83.view.MainView">
     <children>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="18.0" prefHeight="35.0" prefWidth="572.0" text="ImmoScraper" textAlignment="CENTER">
             <font>
@@ -31,6 +30,5 @@
                 <Font size="16.0" />
             </font>
         </Text>
-      <TextField fx:id="email" promptText="Email eingeben" layoutX="211.0" layoutY="277.0" />
     </children>
 </Pane>

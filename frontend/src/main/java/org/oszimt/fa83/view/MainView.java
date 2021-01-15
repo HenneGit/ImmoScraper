@@ -33,13 +33,9 @@ public class MainView extends AbstractView {
     @FXML
     private ComboBox<ScrapeQuery> queryComboBox;
 
-    @FXML
-    private TextField email;
-
     private MainController controller = MainController.getInstance();
 
     public void initialize() throws ValidationError {
-
         ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
         queryComboBox.itemsProperty().setValue(queryList);
         convertComboDisplayList();
@@ -48,7 +44,6 @@ public class MainView extends AbstractView {
 
     @FXML
     private void switchToQuerySetup(){
-        EmailSupplier.getInstance().setEmail(email.getText());
         controller.setActiveQuery(queryComboBox.getValue());
         StageController.getInstance().setRoot(Layout.QUERY);
 
