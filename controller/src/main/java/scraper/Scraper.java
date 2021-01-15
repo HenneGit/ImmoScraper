@@ -9,7 +9,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Scraper {
@@ -38,13 +37,9 @@ public class Scraper {
 
         List<String> resultIdList =  new ArrayList<String>();
         List<ScrapeResultPojo> resultList =  new ArrayList<ScrapeResultPojo>();
-
         try {
-
-            ScrapeResultsFileWriter fileWriter = ScrapeResultsFileWriter.getInstance();
-            Collection<ScrapeResultPojo> fetchedIds = fileWriter.findAll();
-
-           HtmlPage page = client.getPage(query.toUrl());
+            String searchUrl = "https://www.immobilienscout24.de/Suche/de/" + searchQuery + "/wohnung-mieten?enteredFrom=one_step_search";
+            HtmlPage page = client.getPage("https://www.immobilienscout24.de/Suche/de/berlin/berlin/wohnung-mieten?price=-500.0&livingspace=50.0-&pricetype=rentpermonth&enteredFrom=one_step_search");
             System.out.println(page.getPage());
             List<HtmlElement> listCollection = page.getDocumentElement().getElementsByAttribute("ul", "id", "resultListItems");
             Iterable<HtmlElement> listElements = new ArrayList<HtmlElement>();
@@ -52,7 +47,7 @@ public class Scraper {
                 for (HtmlElement element : list.getHtmlElementDescendants()) {
                     if (element.hasAttribute("data-id")) {
                         String oid = element.getAttribute("data-id");
-                        if ((!resultIdList.contains(oid) && fetchedIds == null) || (!(fetchedIds == null) && !fetchedIds.contains(oid))) {
+                        if (!resultIdList.contains(oid)) {
                             resultIdList.add(oid);
                         }
                     }
@@ -64,8 +59,6 @@ public class Scraper {
                 resultList.add(result);
                 System.out.println(result.getUrl());
             }
-            fileWriter.write(resultList);
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +68,8 @@ public class Scraper {
     }
     public static void main(String[] args){
         Scraper debug = new Scraper();
-        ScrapeQuery query = new ScrapeQuery.ScrapeQueryBuilder().city("berlin/berlin").roomSize("2.0").priceTo(500.0).space(5.0).build();
-        System.out.println(query.toUrl());
+        ScrapeQuery query = new ScrapeQuery();
+
         debug.scrape(query);
     }
 
