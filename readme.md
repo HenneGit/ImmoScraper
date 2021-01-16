@@ -4,45 +4,43 @@
 
 Für die Installation muss das Projekt heruntergeladen werden.\
 Um den ImmoScraper zu verwenden, wird ein Rechner mit **Java** (min. Java **Version 11**) benötigt.\
-Um das Programm auszuführen muss die ausführbare **.jar-Datei** gestartet werden.\
+Um das Programm auszuführen muss die ausführbare **immoscraper.jar-Datei** gestartet werden.\
 Nun sollte eine Anwendung erscheinen und das Programm ist bereit!
 
 ## Handbuch
 
-Wenn die ausführbare .jar-Datei gestartet wurde, sollte so ein Fenster erscheinen:
+Wenn die ausführbare **immoscraper.jar**-Datei gestartet wurde, sollte so ein Fenster erscheinen:
 
 ![alt text](./screenshots/ImmoScraper_Start.png "ImmoScraper - Startoberfläche")
 
-Hier hat man die Möglichkeit mit **Los!** eine neue Suchanfrage zu einer Wohnung/Immobilie zu stellen oder eine bereits erstellte Suchanfrage zu bearbeiten.
+Hier hat man die Möglichkeit eine neue **Suchanfrage** zu einer Wohnung/Immobilie zu erstellen oder eine bereits erstellte Suchanfrage zu bearbeiten.
+Die jeweiligen Informationen zu einer Wohnung/Immobilie müssen hier in den Feldern angegeben werden. Dabei ist zu beachten, dass die Angabe des **Namens der Suchanfrage**, die **E-Mail-Adresse**, und die Informationen **Ort, Postleitzahl oder Stadt** **erforderlich** sind. Der Rest ist optional.  
 
 #### Suchanfrage erstellen
-Beim Klick auf **Los!** erscheint eine neue Maske:
 
-![alt text](./screenshots/ImmoScraper_Query.png "ImmoScraper - Neue Suchanfrage")
-
-Damit ImmoScraper etwas finden kann, werden hier ein paar **Informationen** zur gesuchten Wohnung/Immobilie benötigt.
+Damit ImmoScraper nach einer gewünschten Wohnung/Immobilie suchen kann, werden hier ein paar **Informationen** zur Wunsch-Wohnung/-Immobilie benötigt.
 
 Beispiel:\
 ![alt text](./screenshots/ImmoScraper_Example.png "ImmoScraper - Beispiel")
 
 #### Suchanfrage speichern
 Ein Klick auf **Speichern** speichert die derzeit eingegebenen Informationen als Suchanfrage unter dem angegebenen Namen.
-![alt text](./screenshots/ImmoScraper_Save.png "ImmoScraper - Speichern")
+![alt text](./screenshots/ImmoScraper_Save.png "ImmoScraper - Speichern")\
+(Suchanfragen werden in einer CSV-Datei abgespeichert und niedergeschrieben.)
 
+#### Suchanfrage bearbeiten
+Damit eine Suchanfrage bearbeitet werden kann, muss man diese zunächst in der Drop-Down-Liste des Programms auswählen.
+![alt text](./screenshots/ImmoScraper_Edit.png "ImmoScraper - Bearbeiten")\
 
-Um eine Suchanfrage zu **bearbeiten** geht man zunächst zurück zum Start:
-![alt text](./screenshots/ImmoScraper_Back.png "ImmoScraper - Zurück zum Start")
+Nun hat man die Möglichkeit die ausgewählte Suchanfrage zu bearbeiten, sollte sich etwas geändert oder sich vertippt haben.
 
-Hier wählt man die jeweilige Suchanfrage, die bearbeitet werden soll, aus der Drop-Down-Liste aus und klickt auf **Los!**:
-![alt text](./screenshots/ImmoScraper_Edit.png "ImmoScraper - Suchanfrage auswählen")
-
-Nun hat man die Möglichkeit seine Suchanfrage zu bearbeiten, sollte sich etwas geändert oder sollte man sich vertippt haben.
-
-Ein Klick auf **Löschen** entfernt die jeweilige Suchanfrage wieder.
+#### Suchanfrage löschen
+Ein Klick auf **Löschen** entfernt die ausgewählte Suchanfrage und die Informationen aus der CSV Datei wieder.
 ![alt text](./screenshots/ImmoScraper_Delete.png "ImmoScraper - Löschen")
 
+#### Benachrichtigt werden
 Mit einem Klick auf **Suchen** werden die Informationen aus den Feldern der Suchanfrage als Query-String in den immoscout24-Link eingefügt.\
-*(z.B. www.immobilienscout24.de/Suche/de/ + searchQuery + /wohnung-mieten?enteredFrom=one_step_search" )*\
+*(z.B. www.immobilienscout24.de/Suche/de/ + searchQuery + /wohnung-mieten?enteredFrom=one_step_search" )*
 
 Die Scraping-Einheit von ImmoScraper sucht sich die nächsten Wohnungen/Immobilien mit den jeweiligen Kriterien heraus und gibt die Informationen zurück.
 Der Controller sendet diesbezüglich dann eine E-Mail mit den Informationen an die angegebene E-Mail-Adresse.
