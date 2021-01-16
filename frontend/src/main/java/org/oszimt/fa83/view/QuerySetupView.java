@@ -18,13 +18,12 @@ import org.oszimt.fa83.definition.RoomSize;
 import org.oszimt.fa83.emailhandler.EmailSupplier;
 import org.oszimt.fa83.emailhandler.MainController;
 import org.oszimt.fa83.pojo.ScrapeQuery;
+import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.util.QueryValidator;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class QuerySetupView extends AbstractView {
@@ -60,10 +59,22 @@ public class QuerySetupView extends AbstractView {
     private final MainController controller = MainController.getInstance();
 
     public void initialize() {
+        try {
+            Collection<ScrapeQuery> scrapeQueries = controller.getScrapeQueries();
+            ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(scrapeQueries);
+            queryComboBox.itemsProperty().setValue(queryList);
+        } catch (Exception e) {
+            try {
+                if (e instanceof CSVNotFoundException) {
+                    controller.write();
+                }
+            } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException csvRequiredFieldEmptyException) {
+                callError(e);
+            }
+        }
         fillRoomChoiceBox();
         updateCombobox();
-        ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
-        queryComboBox.itemsProperty().setValue(queryList);
+        convertComboDisplayList();
         queryComboBox.valueProperty().addListener(new ChangeListener<ScrapeQuery>() {
             @Override
             public void changed(ObservableValue<? extends ScrapeQuery> observableValue, ScrapeQuery query, ScrapeQuery t1) {
@@ -71,23 +82,20 @@ public class QuerySetupView extends AbstractView {
                 fillScrapeQueryFields();
             }
         });
-        convertComboDisplayList();
         textArea.setEditable(false);
-        String name = rooms.getSelectionModel().selectedIndexProperty().getName();
-
     }
 
     @FXML
     private void startScraping() {
         ScrapeQuery scrapeQuery = setUpScrapeQuery();
-        if (StringUtils.isEmpty(email.getText())){
+        if (StringUtils.isEmpty(email.getText())) {
             try {
                 QueryValidator.validateEmail(email.getText());
             } catch (ValidationException e) {
                 callError(e);
                 return;
             }
-        }  else {
+        } else {
             EmailSupplier.getInstance().setEmail(email.getText());
         }
         try {
@@ -99,7 +107,7 @@ public class QuerySetupView extends AbstractView {
     }
 
     @FXML
-    private void removeQuery(){
+    private void removeQuery() {
         controller.removeQuery(controller.getActiveQuery().getPk());
         try {
             controller.write();
@@ -111,7 +119,7 @@ public class QuerySetupView extends AbstractView {
     }
 
     @FXML
-    private void createQuery(){
+    private void createQuery() {
 
         try {
             ScrapeQuery scrapeQuery = setUpScrapeQuery();
@@ -122,13 +130,13 @@ public class QuerySetupView extends AbstractView {
                 textArea.setText(queryName.getText() + " wurde gespeichert");
                 updateCombobox();
             }
-        } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException | ValidationException e) {
+        } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException | ValidationException | CSVNotFoundException e) {
             callError(e);
         }
     }
 
 
-    private ScrapeQuery setUpScrapeQuery(){
+    private ScrapeQuery setUpScrapeQuery() {
         QueryValidator validator = new QueryValidator(new StringBuilder());
         try {
             validator.validate(getAllTextFields());
@@ -148,8 +156,8 @@ public class QuerySetupView extends AbstractView {
 
     }
 
-    private Double parseDouble(String doubleToParse){
-        if (StringUtils.isEmpty(doubleToParse)){
+    private Double parseDouble(String doubleToParse) {
+        if (StringUtils.isEmpty(doubleToParse)) {
             return null;
         } else {
             return Double.parseDouble(doubleToParse);
@@ -168,6 +176,7 @@ public class QuerySetupView extends AbstractView {
             public String toString(ScrapeQuery product) {
                 return product.getQueryName();
             }
+
             @Override
             public ScrapeQuery fromString(final String string) {
                 return queryComboBox.getItems().stream().filter(query -> query.getQueryName().equals(string)).findFirst().orElse(null);
@@ -175,21 +184,26 @@ public class QuerySetupView extends AbstractView {
         });
     }
 
-    private void updateCombobox(){
-        ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
+    private void updateCombobox() {
+        ObservableList<ScrapeQuery> queryList = null;
+        try {
+            queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
+        } catch (CSVNotFoundException e) {
+            callError(e);
+        }
         queryComboBox.itemsProperty().setValue(queryList);
         convertComboDisplayList();
 
-        }
+    }
 
-    private void fillScrapeQueryFields(){
+    private void fillScrapeQueryFields() {
         ScrapeQuery activeQuery = controller.getActiveQuery();
         if (activeQuery != null) {
 
-            if (activeQuery.getRadius() != null){
+            if (activeQuery.getRadius() != null) {
                 radius.setText(String.valueOf(activeQuery.getRadius().doubleValue()));
             }
-            if (activeQuery.getSpace() != null){
+            if (activeQuery.getSpace() != null) {
                 space.setText(String.valueOf(activeQuery.getSpace().doubleValue()));
             }
             if (activeQuery.getPriceTo() != null) {
@@ -204,7 +218,8 @@ public class QuerySetupView extends AbstractView {
         }
 
     }
-    private List<TextField> getAllTextFields(){
+
+    private List<TextField> getAllTextFields() {
         List<TextField> allFields = new ArrayList<>();
         allFields.add(radius);
         allFields.add(space);
