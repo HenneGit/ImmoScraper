@@ -10,7 +10,7 @@ Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Such
     - [Suchanfrage erstellen](#suchanfrage-erstellen)
     - [Suchanfrage speichern](#suchanfrage-speichern)
     - [Suchanfrage bearbeiten](#suchanfrage-bearbeiten)
-    - [Suchanfrage löschen](#suchanfrage-lschen)
+    - [Suchanfrage löschen](#suchanfrage-löschen)
     - [Benachrichtigt werden](#benachrichtigt-werden)
     
 - [Schnittstellen](#schnittstellen)
