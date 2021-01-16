@@ -1,28 +1,46 @@
 package scraper;
 
-public class ScrapeResultPojo {
+import com.opencsv.bean.CsvBindByName;
+import org.oszimt.fa83.api.Entity;
+import org.oszimt.fa83.pojo.ScrapeQuery;
 
-    String subject;
-    String body;
+public class ScrapeResultPojo implements Entity {
 
-    public ScrapeResultPojo(String subject, String body) {
-        this.subject = subject;
-        this.body = body;
+    private String url;
+
+    @CsvBindByName(column = "pk")
+    private String oid;
+
+    /**
+     * use for bean creation only.
+     */
+    public ScrapeResultPojo() {
+        //necessary for CSVToBeanReader use builder
     }
 
-    public String getSubject() {
-        return subject;
+    public ScrapeResultPojo(String url, String oid) {
+        this.url = url;
+        this.oid = oid;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public String getUrl() {
+        return this.url;
     }
 
-    public String getBody() {
-        return body;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public String getOid() {
+        return this.oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    @Override
+    public String getPk() {
+        return this.oid;
     }
 }
