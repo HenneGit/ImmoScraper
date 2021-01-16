@@ -1,4 +1,20 @@
 # ImmoScraper
+ImmoScraper ist im Rahmen eines Schulprojekts entstanden.
+
+Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Suchkriterien Wohnungen/Immobilien auf ImmoScout24 (https://www.immobilienscout24.de) heraussucht und dem Nutzer Informationen über Wohnungen/Immobilien per E-Mail zukommen lässt.
+
+## Inhaltsverzeichnis
+
+- [Installation](#installation)
+- [Handbuch](#handbuch)
+    - [Suchanfrage erstellen](#suchanfrage-erstellen)
+    - [Suchanfrage speichern](#suchanfrage-speichern)
+    - [Suchanfrage bearbeiten](#suchanfrage-bearbeiten)
+    - [Suchanfrage löschen](#suchanfrage-lschen)
+    - [Benachrichtigt werden](#benachrichtigt-werden)
+    
+- [Schnittstellen](#schnittstellen)
+- [Entwicklung](#entwicklung)
 
 ## Installation
 
@@ -50,3 +66,6 @@ Der Controller sendet diesbezüglich dann eine E-Mail mit den Informationen an d
 ImmoScraper selbst spricht keine externen Schnittstellen an.\
 Aber damit ImmoScraper Informationen zu Wohnungen/Immobilien nach bestimmten Suchkriterien finden kann, muss eine Suchanfrage angelegt werden.\
 Damit eine Suchanfrage gespeichert wird und wiederverwendbar/bearbeitbar ist, wird die interne Schnittstelle **Repository** angesprochen. Durch das Ansprechen der Schnittstelle werden Funktionen im **Backend** aufgerufen, die die Informationen der Queries in einer **CSV-Datei** persistent abspeichern.
+
+## Entwicklung
+
