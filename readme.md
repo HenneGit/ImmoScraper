@@ -57,6 +57,10 @@ Nun hat man die Möglichkeit die ausgewählte Suchanfrage zu bearbeiten, sollte 
 Ein Klick auf **Löschen** entfernt die ausgewählte Suchanfrage und die Informationen aus der CSV Datei wieder.
 ![alt text](./screenshots/ImmoScraper_Delete.png "ImmoScraper - Löschen")
 
+#### Scraping stoppen
+Um dem Programm zu befehlen das Scraping zu stoppen
+Damit das Programm das Scraping stoppt, muss der **Stop** Button getätigt werden. Dieser befiehlt der Scraping-Einheit das Scrapen einzustellen.
+
 #### Benachrichtigt werden
 Mit einem Klick auf **Suchen** werden die Informationen aus den Feldern der Suchanfrage als Query-String in den immoscout24-Link eingefügt.\
 *(z.B. www.immobilienscout24.de/Suche/de/ + searchQuery + /wohnung-mieten?enteredFrom=one_step_search" )*
