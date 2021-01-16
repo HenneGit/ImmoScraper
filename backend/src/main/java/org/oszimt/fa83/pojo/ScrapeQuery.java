@@ -52,6 +52,27 @@ public class ScrapeQuery implements Entity {
         this.roomSize = builder.roomSize;
     }
 
+    public String toUrl() {
+       String url = "https://www.immobilienscout24.de/Suche/de/";
+
+        // We dont handle radius yet.
+        if (this.city == null) {
+            return "";
+        }
+        url += this.city + "/wohnung-mieten?";
+        if (!(this.roomSize == null)) {
+            url += "numberofrooms=" + this.roomSize + "-&";
+        }
+        if (!(this.priceTo == null)) {
+            url += "price=-" + this.priceTo + "&";
+        }
+        if (!(this.space == null)) {
+            url += "livingspace=" + this.space + "-&";
+        }
+        url += "pricetype=rentpermonth&enteredFrom=one_step_search";
+        return url;
+    }
+
     @Override
     public String getPk() {
         return pk;
