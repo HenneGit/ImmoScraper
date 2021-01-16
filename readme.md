@@ -12,9 +12,12 @@ Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Such
     - [Suchanfrage bearbeiten](#suchanfrage-bearbeiten)
     - [Suchanfrage löschen](#suchanfrage-löschen)
     - [Benachrichtigt werden](#benachrichtigt-werden)
-    
-- [Schnittstellen](#schnittstellen)
+- [Schnittstellen](#schnittstellen) 
+- [Daten](#daten)
 - [Entwicklung](#entwicklung)
+    -[UI](#ui)
+    -[API](#api)
+    -[Speichern von Suchanfragen](#speichern-von-suchanfragen)
 
 ## Installation
 
@@ -67,5 +70,21 @@ ImmoScraper selbst spricht keine externen Schnittstellen an.\
 Aber damit ImmoScraper Informationen zu Wohnungen/Immobilien nach bestimmten Suchkriterien finden kann, muss eine Suchanfrage angelegt werden.\
 Damit eine Suchanfrage gespeichert wird und wiederverwendbar/bearbeitbar ist, wird die interne Schnittstelle **Repository** angesprochen. Durch das Ansprechen der Schnittstelle werden Funktionen im **Backend** aufgerufen, die die Informationen der Queries in einer **CSV-Datei** persistent abspeichern.
 
+## Daten
+Die Informationen einer Suchanfrage werden innerhalb einer **CSV-Datei** gespeichert. Die Daten weisen eine **sehr geringe Komplexität** auf und sind durch die Verwendung in einer CSV-Datei für das Programm **sehr schnell zu verarbeiten**.
+
 ## Entwicklung
 
+### UI
+Im Laufe der Entwicklung des Projekts hat sich das Team entschieden eine **modernere, jedoch simplere** Benutzeroberfläche zu entwickeln, als eigentlich geplant war.
+Die neue Oberfläche erscheint **übersichtlicher und einfacher** zu verwenden, als die Konzeptvorlage.
+Der **Vorteil** der neuen Oberfläche ist, dass sich alles auf einer Szene abspielt und diese nicht gewechselt werden muss.
+Da es sich beim ImmoScraper um ein *einfaches* Programm handelt, passt die neue UI sehr gut.
+
+### API
+Ursprünglich war es geplant über den ImmoScraper eine Verbindung zur offiziellen API von ImmoScout24 (https://api.immobilienscout24.de/) herzustellen und daraus Informationen zu beziehen.
+Letztendlich war es einfacher die Informationen eines Querys in einen Link einzubauen und die Informationen mittels der Scraping-Einheit herauszulesen.
+
+### Speichern von Suchanfragen
+Die Suchanfragen sollten eigentlich als JSON-String abgespeichert werden.\
+Aufgrund der Funktionalität des Programms und der **sehr geringen Komplexität der Datensätze** werden die Querys in einer **CSV-Datei** abgespeichert.
