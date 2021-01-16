@@ -2,25 +2,23 @@ package org.oszimt.fa83.repository;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import org.oszimt.fa83.api.Repository;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 import org.oszimt.fa83.util.IdCounter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
     private Map<Comparable<?>, ScrapeQuery> repository = new HashMap<>();
 
+    private final String FILE = "queries.csv";
+
     private static final ScrapeQueryRepository instance = new ScrapeQueryRepositoryImpl();
 
-    private final ScrapeQueryFileWriter fileWriter = ScrapeQueryFileWriter.getInstance();
+    private final GenericFileWriter genericFileWriter = GenericFileWriter.getInstance();
 
     private ScrapeQueryRepositoryImpl() {
     }
@@ -30,26 +28,23 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
 
     @Override
-    public Comparable<?> create(ScrapeQuery query) {
+    public ScrapeQuery create(ScrapeQuery query) {
         String uuid = IdCounter.createId();
         if (query.getPk() == null){
             query.setPk(uuid);
         }
         repository.put(uuid, query);
-        return uuid;
+        return repository.get(uuid);
     }
 
     @Override
-    public ScrapeQuery update(ScrapeQuery query) throws CSVNotFoundException {
-        if (this.repository.size() == 0){
-            load();
-        }
-        ScrapeQuery scrapeQuery = this.repository.get(query.getPk());
+    public ScrapeQuery update(Comparable<?> pk, ScrapeQuery query)  {
+        ScrapeQuery scrapeQuery = this.repository.get(pk);
         scrapeQuery.setEmail(query.getEmail());
         scrapeQuery.setQueryName(query.getQueryName());
         scrapeQuery.setCity(query.getCity());
         scrapeQuery.setRadius(query.getRadius());
-        scrapeQuery.setRadius(query.getPriceTo());
+        scrapeQuery.setPriceTo(query.getPriceTo());
         scrapeQuery.setRoomSize(query.getRoomSize());
         scrapeQuery.setSpace(query.getSpace());
         return scrapeQuery;
@@ -79,14 +74,12 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
     @Override
     public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        this.fileWriter.write(new ArrayList<>(this.repository.values()));
+        this.genericFileWriter.write(new ArrayList<>(this.repository.values()), FILE);
     }
 
     private void load() throws CSVNotFoundException {
-            Collection<ScrapeQuery> all = fileWriter.findAll();
-            all.forEach(q -> this.repository.put(q.getPk(), q));
-
-
+        List<ScrapeQuery> all = genericFileWriter.findAll(FILE, ScrapeQuery.class).stream().map(e -> (ScrapeQuery) e).collect(Collectors.toList());
+        all.forEach(q -> this.repository.put(q.getPk(), q));
     }
 
 }

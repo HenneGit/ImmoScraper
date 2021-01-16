@@ -7,11 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.oszimt.fa83.definition.Layout;
-import org.oszimt.fa83.emailhandler.MainController;
 import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.view.ErrorView;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;

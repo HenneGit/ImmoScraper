@@ -16,18 +16,18 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="queryName"  layoutX="14.0" layoutY="59.0" prefHeight="35.0" prefWidth="380.0" promptText="Name der Anfrage" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="266.0" />
+      <TextField fx:id="queryName" layoutX="14.0" layoutY="59.0" prefHeight="35.0" prefWidth="380.0" promptText="Name der Anfrage" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="266.0" />
       <TextField fx:id="city" layoutX="14.0" layoutY="109.0" prefHeight="40.0" prefWidth="180.0" promptText="Ort, PLZ, Stadt" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="467.0" AnchorPane.topAnchor="109.0" />
       <TextField fx:id="email" layoutX="214.0" layoutY="109.0" prefHeight="40.0" prefWidth="180.0" promptText="Email" />
       <TextField fx:id="priceTo" layoutX="14.0" layoutY="164.0" prefHeight="40.0" prefWidth="120.0" promptText="Preisgrenze" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="538.0" />
       <TextField fx:id="space" layoutX="139.0" layoutY="164.0" prefHeight="40.0" prefWidth="120.0" promptText="Fläche" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="401.0" />
       <TextField fx:id="radius" layoutX="273.0" layoutY="164.0" prefHeight="40.0" prefWidth="120.0" promptText="Umkreis" AnchorPane.leftAnchor="273.0" />
       <ChoiceBox fx:id="rooms" layoutX="71.0" layoutY="216.0" prefHeight="35.0" prefWidth="323.0" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="266.0" />
-      <Button fx:id="createQuery" layoutX="17.0" layoutY="267.0" mnemonicParsing="false" onAction="#createQuery" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Speichern" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="535.0">
+      <Button fx:id="createQuery" layoutX="14.0" layoutY="267.0" mnemonicParsing="false" onAction="#createQuery" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Speichern" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="538.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="startScraping" layoutX="538.0" layoutY="267.0" mnemonicParsing="false" onAction="#startScraping" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Suchen" AnchorPane.rightAnchor="14.0">
+      <Button fx:id="startScraping" layoutX="406.0" layoutY="267.0" mnemonicParsing="false" onAction="#startScraping" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Suchen" AnchorPane.rightAnchor="146.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
@@ -39,5 +39,10 @@
       </Button>
       <TextArea fx:id="textArea" layoutX="406.0" layoutY="59.0" prefHeight="193.0" prefWidth="239.0" />
       <ComboBox fx:id="queryComboBox" layoutX="406.0" layoutY="14.0" prefHeight="28.0" prefWidth="239.0" promptText="Suchanfrage auswählen..." />
+      <Button fx:id="stopScraping" layoutX="537.0" layoutY="267.0" mnemonicParsing="false" onAction="#stopScraping" prefHeight="35.0" prefWidth="108.0" style="-fx-background-color: yellow; -fx-background-radius: 30px;" text="Stop">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

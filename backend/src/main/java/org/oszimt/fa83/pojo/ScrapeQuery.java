@@ -29,7 +29,7 @@ public class ScrapeQuery implements Entity {
     private Double radius;
 
     @CsvBindByName(column = "roomSize")
-    private String roomSize;
+    private Double roomSize;
 
     @CsvBindByName(column = "email")
     private String email;
@@ -53,13 +53,13 @@ public class ScrapeQuery implements Entity {
     }
 
     public String toUrl() {
-       String url = "https://www.immobilienscout24.de/Suche/de/";
+        String url = "https://www.immobilienscout24.de/Suche/de/";
 
         // We dont handle radius yet.
         if (this.city == null) {
             return "";
         }
-        url += this.city + "/wohnung-mieten?";
+        url += parseCity() + "/wohnung-mieten?";
         if (!(this.roomSize == null)) {
             url += "numberofrooms=" + this.roomSize + "-&";
         }
@@ -90,11 +90,11 @@ public class ScrapeQuery implements Entity {
         this.pk = pk;
     }
 
-    public String getRoomSize() {
+    public Double getRoomSize() {
         return roomSize;
     }
 
-    public void setRoomSize(String roomSize) {
+    public void setRoomSize(Double roomSize) {
         this.roomSize = roomSize;
     }
 
@@ -139,6 +139,11 @@ public class ScrapeQuery implements Entity {
         this.radius = radius;
     }
 
+    private String parseCity(){
+        String toLowerCase = city.toLowerCase();
+        return toLowerCase + "/" +toLowerCase;
+    }
+
     public static class ScrapeQueryBuilder {
         private String city;
         private Double priceTo;
@@ -146,7 +151,7 @@ public class ScrapeQuery implements Entity {
         private String queryName;
         private Double space;
         private Double radius;
-        private String roomSize;
+        private Double roomSize;
         private String email;
 
         public ScrapeQueryBuilder city(String city) {
@@ -179,7 +184,7 @@ public class ScrapeQuery implements Entity {
             return this;
         }
 
-        public ScrapeQueryBuilder roomSize(String roomSize) {
+        public ScrapeQueryBuilder roomSize(Double roomSize) {
             this.roomSize = roomSize;
             return this;
         }

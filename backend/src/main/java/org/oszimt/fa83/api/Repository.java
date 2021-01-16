@@ -10,13 +10,9 @@ import java.util.Collection;
 
 public interface Repository<ENTITY extends Entity> {
 
-    Comparable<?> create(ENTITY t);
-
-    ENTITY update(ENTITY t) throws CSVNotFoundException;
+    ENTITY create(ENTITY t) throws CSVNotFoundException;
 
     Collection<ENTITY> findAll() throws CSVNotFoundException;
-
-    void remove(Comparable<?> pk);
 
     ENTITY findByPk(Comparable<?> pk) throws CSVNotFoundException;
 

@@ -15,15 +15,18 @@ import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.oszimt.fa83.ValidationException;
 import org.oszimt.fa83.definition.RoomSize;
-import org.oszimt.fa83.emailhandler.EmailSupplier;
-import org.oszimt.fa83.emailhandler.MainController;
+import org.oszimt.fa83.email.EmailSupplier;
+import org.oszimt.fa83.MainController;
 import org.oszimt.fa83.pojo.ScrapeQuery;
+import org.oszimt.fa83.pojo.ScrapeResultPojo;
 import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.util.QueryValidator;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class QuerySetupView extends AbstractView {
@@ -56,6 +59,7 @@ public class QuerySetupView extends AbstractView {
     @FXML
     private ComboBox<ScrapeQuery> queryComboBox;
 
+    private boolean isScraping;
     private final MainController controller = MainController.getInstance();
 
     public void initialize() {
@@ -87,7 +91,11 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private void startScraping() {
-        ScrapeQuery scrapeQuery = setUpScrapeQuery();
+        if (isScraping){
+            return;
+        }
+        createQuery();
+        clearTextArea();
         if (StringUtils.isEmpty(email.getText())) {
             try {
                 QueryValidator.validateEmail(email.getText());
@@ -99,8 +107,27 @@ public class QuerySetupView extends AbstractView {
             EmailSupplier.getInstance().setEmail(email.getText());
         }
         try {
-            controller.startScraping(scrapeQuery);
+            isScraping = true;
+            int randomTimeout = 0;
+            while (isScraping){
+                addTextToTextArea("Scraping wird ausgeführt... ");
+                TimeUnit.MINUTES.sleep(randomTimeout);
+                List<ScrapeResultPojo> results = controller.startScraping();
+                if (results.size() > 0){
+                    controller.write();
+                    addTextToTextArea(results.size() + " Ergebnisse gefunden");
+                    addTextToTextArea("Sende email. ");
+                    controller.sendEmail(packResultLinks(results), "Hab was gefunden");
+                    addTextToTextArea("Email gesendet ");
+                    addTextToTextArea(packResultLinks(results));
+                }
+                Random random = new Random();
+                randomTimeout = random.nextInt(1 + 5) + 1;
+                addTextToTextArea("Schlafe für " + randomTimeout + " Minuten");
+            }
+
         } catch (Exception e) {
+            isScraping = false;
             callError(e);
         }
 
@@ -115,26 +142,30 @@ public class QuerySetupView extends AbstractView {
             callError(e);
         }
         updateCombobox();
-        textArea.setText(queryName.getText() + " wurde gelöscht");
+        addTextToTextArea(queryName.getText() + " wurde gelöscht");
     }
 
     @FXML
     private void createQuery() {
-
-        try {
-            ScrapeQuery scrapeQuery = setUpScrapeQuery();
-            if (scrapeQuery != null) {
-                controller.createScrapeQuery(scrapeQuery);
-                controller.write();
-                controller.setActiveQuery(scrapeQuery);
-                textArea.setText(queryName.getText() + " wurde gespeichert");
-                updateCombobox();
+            try {
+                ScrapeQuery scrapeQuery = setUpScrapeQuery();
+                if (scrapeQuery != null) {
+                    ScrapeQuery newScrapeQuery = controller.createScrapeQuery(scrapeQuery);
+                    controller.write();
+                    controller.setActiveQuery(newScrapeQuery);
+                    addTextToTextArea(queryName.getText() + " wurde gespeichert");
+                    updateCombobox();
+                }
+            } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException | ValidationException | CSVNotFoundException e) {
+                callError(e);
             }
-        } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException | ValidationException | CSVNotFoundException e) {
-            callError(e);
-        }
     }
 
+    @FXML
+    private void stopScraping(){
+        addTextToTextArea("Stoppe...");
+        isScraping = false;
+    }
 
     private ScrapeQuery setUpScrapeQuery() {
         QueryValidator validator = new QueryValidator(new StringBuilder());
@@ -150,7 +181,7 @@ public class QuerySetupView extends AbstractView {
                 .radius(parseDouble(radius.getText()))
                 .space(parseDouble(space.getText()))
                 .priceTo(parseDouble(priceTo.getText()))
-                .roomSize(rooms.getValue())
+                .roomSize(RoomSize.getRoomSizeByDescription(rooms.getValue()))
                 .email(email.getText())
                 .build();
 
@@ -196,6 +227,13 @@ public class QuerySetupView extends AbstractView {
 
     }
 
+    private void addTextToTextArea(String text){
+        String currentText = textArea.getText();
+        currentText += "\n";
+        currentText += getTime() + ": " + text;
+        textArea.setText(currentText);
+    }
+
     private void fillScrapeQueryFields() {
         ScrapeQuery activeQuery = controller.getActiveQuery();
         if (activeQuery != null) {
@@ -214,9 +252,13 @@ public class QuerySetupView extends AbstractView {
             }
             queryName.setText(activeQuery.getQueryName());
             city.setText(Objects.requireNonNull(activeQuery.getCity()));
-            rooms.getSelectionModel().select(activeQuery.getRoomSize());
+            rooms.getSelectionModel().select(RoomSize.getRoomSizeString(activeQuery.getRoomSize()));
         }
 
+    }
+
+    private void clearTextArea() {
+        textArea.setText("");
     }
 
     private List<TextField> getAllTextFields() {
@@ -228,5 +270,19 @@ public class QuerySetupView extends AbstractView {
         allFields.add(priceTo);
         allFields.add(city);
         return allFields;
+    }
+
+    private String getTime(){
+        LocalTime now = LocalTime.now();
+        return now.format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    private String packResultLinks(List<ScrapeResultPojo> resultPojos) {
+        StringBuilder builder = new StringBuilder();
+        resultPojos.forEach(pojo -> {
+            builder.append(pojo.getUrl());
+            builder.append("\n");
+        });
+        return builder.toString();
     }
 }

@@ -1,15 +1,17 @@
-package scraper;
+package org.oszimt.fa83.pojo;
 
 import com.opencsv.bean.CsvBindByName;
 import org.oszimt.fa83.api.Entity;
-import org.oszimt.fa83.pojo.ScrapeQuery;
 
 public class ScrapeResultPojo implements Entity {
 
     private String url;
 
     @CsvBindByName(column = "pk")
-    private String oid;
+    private String pk;
+
+    @CsvBindByName(column = "title")
+    private String title;
 
     /**
      * use for bean creation only.
@@ -18,9 +20,9 @@ public class ScrapeResultPojo implements Entity {
         //necessary for CSVToBeanReader use builder
     }
 
-    public ScrapeResultPojo(String url, String oid) {
+    public ScrapeResultPojo(String url, String pk) {
         this.url = url;
-        this.oid = oid;
+        this.pk = pk;
     }
 
     public String getUrl() {
@@ -31,16 +33,21 @@ public class ScrapeResultPojo implements Entity {
         this.url = url;
     }
 
-    public String getOid() {
-        return this.oid;
+    public String getTitle() {
+        return title;
     }
 
-    public void setOid(String oid) {
-        this.oid = oid;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPk(String pk) {
+        this.pk = pk;
     }
 
     @Override
     public String getPk() {
-        return this.oid;
+        return this.pk;
     }
+
 }

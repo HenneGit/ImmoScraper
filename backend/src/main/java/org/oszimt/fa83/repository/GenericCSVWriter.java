@@ -1,4 +1,4 @@
-package org.oszimt.fa83.repository.api;
+package org.oszimt.fa83.repository;
 
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.*;

@@ -1,4 +1,4 @@
-package org.oszimt.fa83.emailhandler;
+package org.oszimt.fa83.email;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
