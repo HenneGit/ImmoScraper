@@ -5,11 +5,13 @@ import org.oszimt.fa83.api.Entity;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 
 public class ScrapeResultPojo implements Entity {
-
     private String url;
 
     @CsvBindByName(column = "pk")
     private String oid;
+
+    @CsvBindByName(column = "title")
+    private String title;
 
     /**
      * use for bean creation only.
@@ -21,6 +23,14 @@ public class ScrapeResultPojo implements Entity {
     public ScrapeResultPojo(String url, String oid) {
         this.url = url;
         this.oid = oid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getUrl() {

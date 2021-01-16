@@ -36,8 +36,8 @@ public class Scraper {
         client.getOptions().setThrowExceptionOnScriptError(false);
         client.getOptions().setThrowExceptionOnFailingStatusCode(false);
 
-        List<String> resultIdList =  new ArrayList<String>();
-        List<ScrapeResultPojo> resultList =  new ArrayList<ScrapeResultPojo>();
+        List<String> resultIdList =  new ArrayList<>();
+        List<ScrapeResultPojo> resultList =  new ArrayList<>();
 
         try {
 

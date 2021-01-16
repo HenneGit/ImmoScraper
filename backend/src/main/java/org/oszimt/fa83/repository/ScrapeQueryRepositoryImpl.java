@@ -2,12 +2,10 @@ package org.oszimt.fa83.repository;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import org.oszimt.fa83.api.Repository;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 import org.oszimt.fa83.util.IdCounter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,13 +28,12 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
     }
 
     @Override
-    public Comparable<?> create(ScrapeQuery query) {
+    public void create(ScrapeQuery query) {
         String uuid = IdCounter.createId();
         if (query.getPk() == null){
             query.setPk(uuid);
         }
         repository.put(uuid, query);
-        return uuid;
     }
 
     @Override
