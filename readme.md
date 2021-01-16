@@ -15,9 +15,9 @@ Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Such
 - [Schnittstellen](#schnittstellen) 
 - [Daten](#daten)
 - [Entwicklung](#entwicklung)
-    -[UI](#ui)
-    -[API](#api)
-    -[Speichern von Suchanfragen](#speichern-von-suchanfragen)
+    - [UI](#ui)
+    - [API](#api)
+    - [Speichern von Suchanfragen](#speichern-von-suchanfragen)
 
 ## Installation
 
