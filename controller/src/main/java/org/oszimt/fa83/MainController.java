@@ -1,20 +1,23 @@
-package org.oszimt.fa83.emailhandler;
+package org.oszimt.fa83;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import org.oszimt.fa83.ValidationException;
+import org.oszimt.fa83.email.EmailHandler;
+import org.oszimt.fa83.email.EmailSupplier;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.repository.ScrapeQueryRepositoryImpl;
+import org.oszimt.fa83.repository.ScrapeResultRepositoryImpl;
 import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
-import scraper.ScrapeResultPojo;
-import scraper.Scraper;
+import org.oszimt.fa83.pojo.ScrapeResultPojo;
+import org.oszimt.fa83.scraper.Scraper;
 
-import java.io.FileNotFoundException;
+import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -22,6 +25,7 @@ public class MainController {
     private final EmailHandler emailHandler = new EmailHandler();
     private static final MainController INSTANCE = new MainController();
     private final ScrapeQueryRepository repository = ScrapeQueryRepositoryImpl.getInstance();
+    private final ScrapeResultRepositoryImpl resultRepository = ScrapeResultRepositoryImpl.getInstance();
     private ScrapeQuery activeQuery;
 
     private MainController() {
@@ -32,15 +36,17 @@ public class MainController {
         return INSTANCE;
     }
 
-    public void createScrapeQuery(ScrapeQuery query) throws ValidationException, CSVNotFoundException {
+    public ScrapeQuery createScrapeQuery(ScrapeQuery query) throws ValidationException, CSVNotFoundException {
         if (!queryNameIsUnique(query)) {
-            if (this.activeQuery != null && !query.getQueryName().equals(this.activeQuery.getQueryName()))
+            if (this.activeQuery != null && !query.getQueryName().equals(this.activeQuery.getQueryName())) {
                 throw new ValidationException("Name des Auftrags schon vorhanden");
-        } else if (this.activeQuery != null && query.getQueryName().equals(Objects.requireNonNull(this.activeQuery.getQueryName()))) {
-            repository.update(query);
-        } else {
-            repository.create(query);
+            } else {
+                if (this.activeQuery != null && query.getQueryName().equals(Objects.requireNonNull(this.activeQuery.getQueryName()))) {
+                    return repository.update(activeQuery.getPk(), query);
+                }
+            }
         }
+        return repository.create(query);
     }
 
 
@@ -54,17 +60,20 @@ public class MainController {
 
     public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         repository.write();
+        resultRepository.write();
     }
 
-
-    public void startScraping(ScrapeQuery query) throws Exception {
-        String email = query.getEmail();
-        if (email == null) {
-            email = EmailSupplier.getEmail();
+    public List<ScrapeResultPojo> startScraping() throws IOException, CSVNotFoundException {
+        List<ScrapeResultPojo> scrape = scraper.scrape(getActiveQuery());
+        List<ScrapeResultPojo> newResults = new ArrayList<>();
+        for (ScrapeResultPojo resultPojo : scrape){
+            newResults.add(resultRepository.create(resultPojo));
         }
-        //logic for sending a new result
-        ScrapeResultPojo scrape = scraper.scrape(query);
-        emailHandler.createEmailMessage(email, scrape.getBody(), scrape.getBody());
+        return newResults;
+    }
+
+    public void sendEmail(String body, String subject) throws MessagingException {
+        emailHandler.createEmailMessage(EmailSupplier.getEmail(), "body", "subject");
 
     }
 

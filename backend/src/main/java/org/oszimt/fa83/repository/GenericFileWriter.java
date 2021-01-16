@@ -2,8 +2,7 @@ package org.oszimt.fa83.repository;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import org.oszimt.fa83.pojo.ScrapeQuery;
-import org.oszimt.fa83.repository.api.GenericCSVWriter;
+import org.oszimt.fa83.api.Entity;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,16 +14,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
-public class ScrapeQueryFileWriter {
+public class GenericFileWriter {
 
-    private final String FILE = "queries.csv";
-    private static ScrapeQueryFileWriter instance = new ScrapeQueryFileWriter();
-    private GenericCSVWriter<ScrapeQuery> genericWriter = new GenericCSVWriter<>();
+    private static GenericFileWriter instance = new GenericFileWriter();
+    private GenericCSVWriter<Entity> genericWriter = new GenericCSVWriter<>();
 
-    private ScrapeQueryFileWriter() {
+
+
+    private GenericFileWriter() {
     }
 
-    public static ScrapeQueryFileWriter getInstance() {
+    public static GenericFileWriter getInstance() {
         return instance;
     }
 
@@ -33,10 +33,10 @@ public class ScrapeQueryFileWriter {
      *
      * @return collection of all search queries saved in file.
      */
-    Collection<ScrapeQuery> findAll() throws CSVNotFoundException {
+    Collection<? extends Entity> findAll(String fileName, Class<? extends Entity> clazz) throws CSVNotFoundException {
 
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(FILE))) {
-            return genericWriter.getBeans(reader, ScrapeQuery.class);
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(fileName))) {
+            return genericWriter.getBeans(reader, clazz);
         } catch (Exception e){
             throw new CSVNotFoundException();
         }
@@ -45,8 +45,8 @@ public class ScrapeQueryFileWriter {
     /**
      * write all given search queries to file.
      */
-    public void write(List<ScrapeQuery> all) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
-        try (FileOutputStream out = new FileOutputStream(FILE)) {
+    public void write(List<Entity> all, String fileName) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
             final Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
             genericWriter.write(all, writer);
             writer.close();
