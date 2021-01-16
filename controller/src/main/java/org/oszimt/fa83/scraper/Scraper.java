@@ -38,7 +38,6 @@ public class Scraper {
         List<ScrapeResultPojo> resultList = new ArrayList<>();
 
             HtmlPage page = client.getPage(query.toUrl());
-            System.out.println(page.getPage());
             List<HtmlElement> listCollection = page.getDocumentElement().getElementsByAttribute("ul", "id", "resultListItems");
             for (HtmlElement list : listCollection) {
                 for (HtmlElement element : list.getHtmlElementDescendants()) {

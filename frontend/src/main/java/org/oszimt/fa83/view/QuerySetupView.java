@@ -91,7 +91,7 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private void startScraping() {
-        if (isScraping){
+        if (isScraping) {
             return;
         }
         createQuery();
@@ -109,11 +109,11 @@ public class QuerySetupView extends AbstractView {
         try {
             isScraping = true;
             int randomTimeout = 0;
-            while (isScraping){
+            while (isScraping) {
                 addTextToTextArea("Scraping wird ausgeführt... ");
                 TimeUnit.MINUTES.sleep(randomTimeout);
                 List<ScrapeResultPojo> results = controller.startScraping();
-                if (results.size() > 0){
+                if (results.size() > 0) {
                     controller.write();
                     addTextToTextArea(results.size() + " Ergebnisse gefunden");
                     addTextToTextArea("Sende email. ");
@@ -125,6 +125,7 @@ public class QuerySetupView extends AbstractView {
                 randomTimeout = random.nextInt(1 + 5) + 1;
                 addTextToTextArea("Schlafe für " + randomTimeout + " Minuten");
             }
+            addTextToTextArea("Scraping beendet.");
 
         } catch (Exception e) {
             isScraping = false;
@@ -147,22 +148,22 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private void createQuery() {
-            try {
-                ScrapeQuery scrapeQuery = setUpScrapeQuery();
-                if (scrapeQuery != null) {
-                    ScrapeQuery newScrapeQuery = controller.createScrapeQuery(scrapeQuery);
-                    controller.write();
-                    controller.setActiveQuery(newScrapeQuery);
-                    addTextToTextArea(queryName.getText() + " wurde gespeichert");
-                    updateCombobox();
-                }
-            } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException | ValidationException | CSVNotFoundException e) {
-                callError(e);
+        try {
+            ScrapeQuery scrapeQuery = setUpScrapeQuery();
+            if (scrapeQuery != null) {
+                ScrapeQuery newScrapeQuery = controller.createScrapeQuery(scrapeQuery);
+                controller.write();
+                controller.setActiveQuery(newScrapeQuery);
+                addTextToTextArea(queryName.getText() + " wurde gespeichert");
+                updateCombobox();
             }
+        } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException | ValidationException | CSVNotFoundException e) {
+            callError(e);
+        }
     }
 
     @FXML
-    private void stopScraping(){
+    private void stopScraping() {
         addTextToTextArea("Stoppe...");
         isScraping = false;
     }
@@ -227,10 +228,10 @@ public class QuerySetupView extends AbstractView {
 
     }
 
-    private void addTextToTextArea(String text){
+    private void addTextToTextArea(String text) {
         String currentText = textArea.getText();
-        currentText += "\n";
         currentText += getTime() + ": " + text;
+        currentText += "\n";
         textArea.setText(currentText);
     }
 
@@ -272,17 +273,19 @@ public class QuerySetupView extends AbstractView {
         return allFields;
     }
 
-    private String getTime(){
+    private String getTime() {
         LocalTime now = LocalTime.now();
         return now.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
     private String packResultLinks(List<ScrapeResultPojo> resultPojos) {
         StringBuilder builder = new StringBuilder();
-        resultPojos.forEach(pojo -> {
-            builder.append(pojo.getUrl());
-            builder.append("\n");
-        });
+        if (resultPojos.isEmpty()) {
+            for (ScrapeResultPojo pojo : resultPojos) {
+                builder.append(pojo.getUrl());
+                builder.append("\n");
+            }
+        }
         return builder.toString();
     }
 }
