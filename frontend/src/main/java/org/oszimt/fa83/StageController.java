@@ -80,12 +80,14 @@ public class StageController {
         if (exception instanceof ValidationException){
             ValidationException ex = (ValidationException) exception;
             view.setMessage(ex.getReason());
-
+            view.initStage(root);
+            return;
         }
         if (exception instanceof CSVNotFoundException){
             CSVNotFoundException ex = (CSVNotFoundException) exception;
             view.setMessage(ex.getMessage());
-
+            view.initStage(root);
+            return;
         }
         else {
             exception.printStackTrace(pw);

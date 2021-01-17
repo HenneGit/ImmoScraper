@@ -117,25 +117,26 @@ public class QuerySetupView extends AbstractView {
         } else {
             EmailSupplier.getInstance().setEmail(email.getText());
         }
+        addTextToTextArea("Scraping wird gestartet... ");
+
         try {
             isScraping = true;
             int randomTimeout = 0;
-            while (isScraping) {
-                addTextToTextArea("Scraping wird ausgeführt... ");
-                TimeUnit.MINUTES.sleep(randomTimeout);
-                List<ScrapeResultPojo> results = controller.startScraping();
-                if (results.size() > 0) {
-                    controller.write();
-                    addTextToTextArea(results.size() + " Ergebnisse gefunden");
-                    addTextToTextArea("Sende email. ");
-                    controller.sendEmail(packResultLinks(results), "Hab was gefunden");
-                    addTextToTextArea("Email gesendet ");
-                    addTextToTextArea(packResultLinks(results));
-                }
-                Random random = new Random();
-                randomTimeout = random.nextInt(1 + 5) + 1;
-                addTextToTextArea("Schlafe für " + randomTimeout + " Minuten");
+            TimeUnit.MINUTES.sleep(randomTimeout);
+            List<ScrapeResultPojo> results = controller.startScraping();
+            if (results.size() > 0) {
+                controller.write();
+                addTextToTextArea(results.size() + " Ergebnisse gefunden");
+                addTextToTextArea("Sende email. ");
+                //disabled due to gmail authentication error.
+                //controller.sendEmail(packResultLinks(results), "Hab was gefunden");
+                addTextToTextArea("Email gesendet ");
+                addTextToTextArea("Email wäre gesendet worden :(.");
+                addTextToTextArea(packResultLinks(results));
             }
+            Random random = new Random();
+            randomTimeout = random.nextInt(1 + 5) + 1;
+            addTextToTextArea("Schlafe für " + randomTimeout + " Minuten");
             addTextToTextArea("Scraping beendet.");
 
         } catch (Exception e) {
@@ -190,6 +191,7 @@ public class QuerySetupView extends AbstractView {
 
     /**
      * validate and setup scrapequery.
+     *
      * @return the created scrape query.
      */
     private ScrapeQuery setUpScrapeQuery() {
@@ -304,10 +306,12 @@ public class QuerySetupView extends AbstractView {
 
     private String packResultLinks(List<ScrapeResultPojo> resultPojos) {
         StringBuilder builder = new StringBuilder();
-        if (resultPojos.isEmpty()) {
+        if (!resultPojos.isEmpty()) {
             for (ScrapeResultPojo pojo : resultPojos) {
-                builder.append(pojo.getUrl());
-                builder.append("\n");
+                if (pojo != null){
+                    builder.append(pojo.getUrl());
+                    builder.append("\n");
+                }
             }
         }
         return builder.toString();

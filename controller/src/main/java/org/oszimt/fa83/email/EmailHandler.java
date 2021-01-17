@@ -55,13 +55,13 @@ public class EmailHandler {
     /**
      *  send email.
      * @param mailSession properties of email handler.
-     * @param emailMessage the message to send. 
+     * @param emailMessage the message to send.
      * @throws AddressException
      * @throws MessagingException
      */
     private void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
         String emailHost = "smtp.gmail.com";
-        String fromUser = "immoscraper24";
+        String fromUser = "immoscraper24@gmail.com";
         String fromUserEmailPassword = "!mm0Scr4p3r";
         Transport transport = mailSession.getTransport("smtp");
         transport.connect(emailHost, fromUser, fromUserEmailPassword);

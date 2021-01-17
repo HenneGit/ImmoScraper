@@ -90,7 +90,11 @@ public class MainController {
         List<ScrapeResultPojo> scrape = scraper.scrape(getActiveQuery());
         List<ScrapeResultPojo> newResults = new ArrayList<>();
         for (ScrapeResultPojo resultPojo : scrape){
-            newResults.add(resultRepository.create(resultPojo));
+            ScrapeResultPojo pojo = resultRepository.create(resultPojo);
+            if (pojo != null){
+                newResults.add(pojo);
+            }
+
         }
         return newResults;
     }
