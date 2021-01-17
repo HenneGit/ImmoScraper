@@ -2,7 +2,9 @@
 ImmoScraper ist im Rahmen eines Schulprojekts entstanden.
 
 Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Suchkriterien Wohnungen/Immobilien auf ImmoScout24 (https://www.immobilienscout24.de) heraussucht und dem Nutzer Informationen über Wohnungen/Immobilien per E-Mail zukommen lässt.
-
+Momentan Einschränkungen: 
+Emailversand funktioniert nicht. 
+Das Scraping muss jeweils neu angestoßen werden. Die Wiederholung verursacht Probleme mit JavaFx.
 ## Inhaltsverzeichnis
 
 - [Installation](#installation)
@@ -27,6 +29,9 @@ Zur Erstellung einer ausführbaren jar datei ins modul "app" navigieren und auf 
 Die App wird dann im Ordner "target" generiert und kann ausgeführt werden. 
 Um das Programm auszuführen muss die ausführbare **immoscraper_app-1.0-SNAPSHOT.jar** gestartet werden.\
 Nun sollte eine Anwendung erscheinen und das Programm ist bereit!
+Das programm in Development Modus laufen lassen:
+Auf der Konsole ins Modul frontend navigieren und dort mvn compile excec:java ausführen. 
+Funktioniert auch als Run Configuration in IntelliJ zum Debuggen des Programms. 
 
 ## Programmstruktur
 
