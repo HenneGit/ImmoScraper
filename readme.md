@@ -22,8 +22,8 @@ Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Such
 ## Installation
 
 Für die Installation muss das Projekt heruntergeladen werden.\
-Um den ImmoScraper zu verwenden, wird ein Rechner mit **Java** (min. Java **Version 11**) benötigt. Zum bauen der app wird außerdem maven benötigt.\
-Zur Erstellung einer ausführbaren jar datei ins modul app navigieren und auf der konsole   "mvn package" ausführen. \
+Um den ImmoScraper zu verwenden, wird ein Rechner mit **Java** (min. Java **Version 11**) und zum packaging einer ausführbaren jar Datein wir **Maven** (**Version 3.6.x**) benötigt.\
+Zur Erstellung einer ausführbaren jar datei ins modul "app" navigieren und auf der konsole   "mvn package" ausführen. \
 Die App wird dann im Ordner target generiert. 
 Um das Programm auszuführen muss die ausführbare **immoscraper_app-1.0-SNAPSHOT.jar** gestartet werden.\
 Nun sollte eine Anwendung erscheinen und das Programm ist bereit!
