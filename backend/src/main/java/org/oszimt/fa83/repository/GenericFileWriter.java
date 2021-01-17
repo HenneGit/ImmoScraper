@@ -14,6 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * class for accessing and writing files.
+ */
 public class GenericFileWriter {
 
     private static GenericFileWriter instance = new GenericFileWriter();

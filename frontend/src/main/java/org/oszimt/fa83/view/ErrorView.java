@@ -6,7 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-
+/**
+ * error popup for displaying error information.
+ */
 public class ErrorView {
 
 
@@ -14,12 +16,16 @@ public class ErrorView {
     private TextArea messageBox;
     private final Stage window = new Stage();
 
+    /**
+     * set properties to popup.
+     */
     public void initialize(){
         messageBox.setEditable(false);
         messageBox.setWrapText(true);
         messageBox.setEditable(false);
         messageBox.setMouseTransparent(false);
     }
+
     public void setMessage(final String msg){
         messageBox.setText(msg);
     }

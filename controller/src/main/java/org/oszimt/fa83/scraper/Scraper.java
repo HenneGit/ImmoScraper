@@ -11,15 +11,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * scraping class for scraping results from ImmoScout.
+ */
 public class Scraper {
 
     public Scraper() {
     }
 
-
+    /**
+     * scrape Immoscout with query details from given query.
+     * @param query query to scrape immoscout for.
+     * @return result of query.
+     * @throws IOException
+     */
     public List<ScrapeResultPojo> scrape(ScrapeQuery query) throws IOException {
 
         WebClient client = new WebClient(BrowserVersion.FIREFOX);
+        // set user agent to google bot to prevent detection by immoscout.
         client.addRequestHeader("Mozilla/5.0", "(compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
         client.setJavaScriptTimeout(100000);
         client.getOptions().setRedirectEnabled(true);

@@ -52,6 +52,10 @@ public class ScrapeQuery implements Entity {
         this.roomSize = builder.roomSize;
     }
 
+    /**
+     * creates an url from entity properties. Used for scraping immoscout results.
+     * @return new search url with entity properties.
+     */
     public String toUrl() {
         String url = "https://www.immobilienscout24.de/Suche/de/";
 
@@ -144,6 +148,9 @@ public class ScrapeQuery implements Entity {
         return toLowerCase + "/" +toLowerCase;
     }
 
+    /**
+     * builder class for ScrapeQueries.
+     */
     public static class ScrapeQueryBuilder {
         private String city;
         private Double priceTo;

@@ -29,6 +29,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * class for managing frontend functions.
+ */
 public class QuerySetupView extends AbstractView {
 
 
@@ -62,6 +65,9 @@ public class QuerySetupView extends AbstractView {
     private boolean isScraping;
     private final MainController controller = MainController.getInstance();
 
+    /**
+     * fetches all scrape queries. Fills Choice and Comboboxes, Add Eventlisteners, Set field properties.
+     */
     public void initialize() {
         try {
             Collection<ScrapeQuery> scrapeQueries = controller.getScrapeQueries();
@@ -89,6 +95,11 @@ public class QuerySetupView extends AbstractView {
         textArea.setEditable(false);
     }
 
+    /**
+     * logic for scraping. Sets and saves scrape query if not yet in repository. Sets email if not saved in query.
+     * Starts the scraping action and sets a random time out to prevent bot detection by immoscout. If new results are found an email
+     * is send.
+     */
     @FXML
     private void startScraping() {
         if (isScraping) {
@@ -134,6 +145,9 @@ public class QuerySetupView extends AbstractView {
 
     }
 
+    /**
+     * delete the current query.
+     */
     @FXML
     private void removeQuery() {
         controller.removeQuery(controller.getActiveQuery().getPk());
@@ -146,6 +160,9 @@ public class QuerySetupView extends AbstractView {
         addTextToTextArea(queryName.getText() + " wurde gelöscht");
     }
 
+    /**
+     * validates user input and saves query to repository.
+     */
     @FXML
     private void createQuery() {
         try {
@@ -162,12 +179,19 @@ public class QuerySetupView extends AbstractView {
         }
     }
 
+    /**
+     * stop scraping action.
+     */
     @FXML
     private void stopScraping() {
         addTextToTextArea("Stoppe...");
         isScraping = false;
     }
 
+    /**
+     * validate and setup scrapequery.
+     * @return the created scrape query.
+     */
     private ScrapeQuery setUpScrapeQuery() {
         QueryValidator validator = new QueryValidator(new StringBuilder());
         try {

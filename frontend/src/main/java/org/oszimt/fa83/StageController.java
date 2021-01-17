@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * controller for frontend stages.
+ */
 public class StageController {
 
 
@@ -28,6 +31,11 @@ public class StageController {
         return INSTANCE;
     }
 
+    /**
+     * setup stage
+     * @param window window to setup stage to.
+     * @throws IOException
+     */
     public void init(final Stage window) throws IOException {
 
         scene = new Scene(loadFXML(DEFAULT_LAYOUT.getFileName()));
@@ -55,7 +63,10 @@ public class StageController {
         return fxmlLoader.load();
     }
 
-
+    /**
+     * deal with exception and set contents to error layout.
+     * @param exception the exception to display in popup.
+     */
     public void callErrorLayout(final Exception exception){
         Parent root = null;
         try {

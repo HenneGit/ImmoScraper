@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Validator class to validate Frontend input.
+ */
 final public class QueryValidator {
 
     private static final Pattern EMAIL_PATTERN;
@@ -27,6 +30,11 @@ final public class QueryValidator {
         this.builder = stringBuilder;
     }
 
+    /**
+     * validate list of given frontend fields.
+     * @param allFields the fields to validate.
+     * @throws ValidationException thrown when invalid input was given.
+     */
     public void validate(Collection<TextField> allFields) throws ValidationException {
         for (TextField field : allFields){
             String fieldId = field.getId();
@@ -56,7 +64,11 @@ final public class QueryValidator {
         }
     }
 
-    public void checkEmail(String email) throws ValidationException {
+    /**
+     * validate a given email.
+     * @param email the email to validate.
+     */
+    public void checkEmail(String email) {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         if (!matcher.matches()) {
             this.builder.append("Bitte korrekte Email angeben");
@@ -64,6 +76,11 @@ final public class QueryValidator {
         }
     }
 
+    /**
+     * static implementation to validate email string.
+     * @param email the email to validate.
+     * @throws ValidationException thrown is invalid email was given.
+     */
     public static void validateEmail(String email) throws ValidationException {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         if (!matcher.matches()) {

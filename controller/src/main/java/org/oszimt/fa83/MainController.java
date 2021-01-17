@@ -19,6 +19,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * singleton controller class for organizing data and communication between backend and frontend. Hold current active
+ * ScrapeQuery for central access.
+ */
 public class MainController {
 
     private final Scraper scraper = new Scraper();
@@ -36,6 +40,13 @@ public class MainController {
         return INSTANCE;
     }
 
+    /**
+     * create scrapeQuery or if exists update it. Prevents serveral queries from having the same name.
+     * @param query the query to create or to update.
+     * @return the created or updated query.
+     * @throws ValidationException thrown when a duplicate name was given.
+     * @throws CSVNotFoundException when csv file was found.
+     */
     public ScrapeQuery createScrapeQuery(ScrapeQuery query) throws ValidationException, CSVNotFoundException {
         if (!queryNameIsUnique(query)) {
             if (this.activeQuery != null && !query.getQueryName().equals(this.activeQuery.getQueryName())) {
@@ -58,11 +69,23 @@ public class MainController {
         repository.remove(pk);
     }
 
+    /**
+     * write all repositories to file.
+     * @throws CsvRequiredFieldEmptyException
+     * @throws IOException
+     * @throws CsvDataTypeMismatchException
+     */
     public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         repository.write();
         resultRepository.write();
     }
 
+    /**
+     * start scraping with current active scrape query.
+     * @return the results of scraping.
+     * @throws IOException
+     * @throws CSVNotFoundException
+     */
     public List<ScrapeResultPojo> startScraping() throws IOException, CSVNotFoundException {
         List<ScrapeResultPojo> scrape = scraper.scrape(getActiveQuery());
         List<ScrapeResultPojo> newResults = new ArrayList<>();
@@ -72,6 +95,12 @@ public class MainController {
         return newResults;
     }
 
+    /**
+     * send email.
+     * @param body content of email.
+     * @param subject subject of email 
+     * @throws MessagingException
+     */
     public void sendEmail(String body, String subject) throws MessagingException {
         emailHandler.createEmailMessage(EmailSupplier.getEmail(), "body", "subject");
 

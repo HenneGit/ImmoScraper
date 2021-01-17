@@ -1,5 +1,8 @@
 package org.oszimt.fa83.definition;
 
+/**
+ * RoomSize enum for defining values for frontend choicebox.
+ */
 public enum RoomSize {
 
     NEVERMIND("egal", 0D), ONE("ab 1 Zimmer", 1D),ONE_HALF("ab 1,5 Zimmer ", 1.5), TWO("ab 2 Zimmer", 2D),
@@ -30,6 +33,11 @@ public enum RoomSize {
         this.size = size;
     }
 
+    /**
+     * get the corresponding double value for description string.
+     * @param description the description string of roomsize enum value.
+     * @return the actual room size value.
+     */
     public static Double getRoomSizeByDescription(String description){
         for (RoomSize roomSize : RoomSize.values()){
             if (roomSize.getDescription().equals(description)){
@@ -39,6 +47,11 @@ public enum RoomSize {
         return null;
     }
 
+    /**
+     * get roomsize description by double value.
+     * @param value the double value to find the description for.
+     * @return the description string.
+     */
     public static String getRoomSizeString(Double value){
         for (RoomSize roomSize : RoomSize.values()){
             if (roomSize.getSize().equals(value)){

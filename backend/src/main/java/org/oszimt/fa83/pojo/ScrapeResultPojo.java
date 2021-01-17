@@ -3,6 +3,9 @@ package org.oszimt.fa83.pojo;
 import com.opencsv.bean.CsvBindByName;
 import org.oszimt.fa83.api.Entity;
 
+/**
+ * result pojo holding results of scraping action.
+ */
 public class ScrapeResultPojo implements Entity {
 
     private String url;

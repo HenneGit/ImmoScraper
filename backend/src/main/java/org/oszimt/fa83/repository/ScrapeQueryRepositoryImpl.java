@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * repository for {@link ScrapeQuery}.
+ */
 public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
 
     private Map<Comparable<?>, ScrapeQuery> repository = new HashMap<>();
@@ -77,6 +80,10 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
         this.genericFileWriter.write(new ArrayList<>(this.repository.values()), FILE);
     }
 
+    /**
+     * load files from csv.
+     * @throws CSVNotFoundException
+     */
     private void load() throws CSVNotFoundException {
         List<ScrapeQuery> all = genericFileWriter.findAll(FILE, ScrapeQuery.class).stream().map(e -> (ScrapeQuery) e).collect(Collectors.toList());
         all.forEach(q -> this.repository.put(q.getPk(), q));

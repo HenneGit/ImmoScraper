@@ -1,5 +1,8 @@
 package org.oszimt.fa83.repository;
 
+/**
+ * thrown id csv wasn't found.
+ */
 public class CSVNotFoundException extends Exception{
     private final String message;
 

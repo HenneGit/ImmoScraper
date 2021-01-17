@@ -1,5 +1,8 @@
 package org.oszimt.fa83.email;
 
+/**
+ * singleton class for central access to current email
+ */
 public class EmailSupplier {
 
     private static String email;

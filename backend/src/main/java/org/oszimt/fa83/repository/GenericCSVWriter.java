@@ -14,11 +14,22 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * a generic csv writer that writes a pojo extending entity.
+ * @param <T>
+ */
 public class GenericCSVWriter<T extends Entity> {
 
     public GenericCSVWriter() {
     }
 
+    /**
+     * reads from csv and creates beans from it.
+     * @param reader inputstream reader that has the file to read from.
+     * @param clazz the pojo class to create.
+     * @return Collection will all created beaands
+     * @throws IOException thrown when something went wrong while reading.
+     */
     public Collection<T> getBeans(InputStreamReader reader, Class<? extends T> clazz) throws IOException {
 
         CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
@@ -36,7 +47,15 @@ public class GenericCSVWriter<T extends Entity> {
 
     }
 
-    public void write(List<T> queries, Writer writer) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+    /**
+     * writes a list of entity extending pojos to a csv file.
+     * @param beans the list of beans to write to csv.
+     * @param writer the writer for writing to file.
+     * @throws CsvDataTypeMismatchException
+     * @throws CsvRequiredFieldEmptyException
+     * @throws IOException
+     */
+    public void write(List<T> beans, Writer writer) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
         StatefulBeanToCsv<T> csvWriter = new StatefulBeanToCsvBuilder<T>(writer)
                 .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
@@ -44,7 +63,7 @@ public class GenericCSVWriter<T extends Entity> {
                 .withEscapechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
                 .withOrderedResults(false)
                 .build();
-        csvWriter.write(queries);
+        csvWriter.write(beans);
         writer.close();
     }
 }

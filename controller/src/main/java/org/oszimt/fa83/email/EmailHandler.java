@@ -9,12 +9,19 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+/**
+ * class for sending emails.
+ */
 public class EmailHandler {
 
     public EmailHandler() {
     }
 
-    public Properties getMailServerProperties() {
+    /**
+     * set properties for email.
+     * @return new Properties for email sending.
+     */
+    private Properties getMailServerProperties() {
 
         String emailPort = "587";//gmail's smtp port
         Properties emailProperties = new Properties();
@@ -25,6 +32,14 @@ public class EmailHandler {
 
     }
 
+    /**
+     * create a new email message.
+     * @param email the email to send email to.
+     * @param body content of email
+     * @param emailSubject subject of email.
+     * @throws AddressException
+     * @throws MessagingException
+     */
     public void createEmailMessage(String email, String body, String emailSubject) throws AddressException,
             MessagingException {
         Session mailSession = Session.getDefaultInstance(getMailServerProperties(), null);
@@ -37,7 +52,14 @@ public class EmailHandler {
 
     }
 
-    public void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
+    /**
+     *  send email.
+     * @param mailSession properties of email handler.
+     * @param emailMessage the message to send. 
+     * @throws AddressException
+     * @throws MessagingException
+     */
+    private void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
         String emailHost = "smtp.gmail.com";
         String fromUser = "immoscraper24";
         String fromUserEmailPassword = "!mm0Scr4p3r";

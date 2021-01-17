@@ -1,5 +1,8 @@
 package org.oszimt.fa83.definition;
 
+/**
+ * holds names of javafx fxml layout files.
+ */
 public enum Layout {
 
 
