@@ -24,13 +24,36 @@ Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Such
 Für die Installation muss das Projekt heruntergeladen werden.\
 Um den ImmoScraper zu verwenden, wird ein Rechner mit **Java** (min. Java **Version 11**) und zum packaging einer ausführbaren jar Datein wir **Maven** (**Version 3.6.x**) benötigt.\
 Zur Erstellung einer ausführbaren jar datei ins modul "app" navigieren und auf der konsole   "mvn package" ausführen. \
-Die App wird dann im Ordner target generiert. 
+Die App wird dann im Ordner "target" generiert und kann ausgeführt werden. 
 Um das Programm auszuführen muss die ausführbare **immoscraper_app-1.0-SNAPSHOT.jar** gestartet werden.\
 Nun sollte eine Anwendung erscheinen und das Programm ist bereit!
 
+## Programmstruktur
+
+Die App ist in vier Maven Module unterteilt. 
+ 1. app
+ 2. backend
+ 3. controller
+ 4. frontend
+
+App: 
+Diese modul ist ausschließlich zum packaging des Programms verantwortlich. Es enthält alle anderen module als dependencies und sorgt außerdem dafür das die javaFx runtime
+verfügbar ist. 
+
+Backend:
+Dieses Modul ist für die Datenhaltung verantwortlich. Es schreibt Daten in CSV Dateien, die sie auch erzeugt, sofern nicht vorhanden. 
+
+Controller:
+Im Controllermodul findet die Kommunikation zwischen Frontend und Backend statt. Außerdem wird von hier das scraping ausgeführt sowie der Versand von 
+Email angestoßen. 
+
+Frontend: 
+Das Frontend erzeugt die gui mit javafx. Zudem werden hier Daten validiert, die vom Nutzer eingegeben wurden bevor sie über den Controller im Backend landen.  
+
+
 ## Handbuch
 
-Wenn die ausführbare **immoscraper.jar**-Datei gestartet wurde, sollte so ein Fenster erscheinen:
+Wenn die ausführbare **immoscraper_app-1.0-SNAPSHOT.jar**-Datei gestartet wurde, sollte so ein Fenster erscheinen:
 
 ![alt text](./screenshots/ImmoScraper_Start.png "ImmoScraper - Startoberfläche")
 
