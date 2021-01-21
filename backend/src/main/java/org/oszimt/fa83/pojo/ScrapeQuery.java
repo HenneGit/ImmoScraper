@@ -34,8 +34,11 @@ public class ScrapeQuery implements Entity {
     @CsvBindByName(column = "email")
     private String email;
 
+    @CsvBindByName(column = "hasWBS")
+    private Boolean hasWBS;
+
     /**
-     * use for bean creation only. To create new SrapeQuery object use {@link ScrapeQueryBuilder}.
+     * use for bean creation only. To create new ScrapeQuery object use {@link ScrapeQueryBuilder}.
      */
     public ScrapeQuery() {
         //necessary for CSVToBeanReader use builder
@@ -50,6 +53,7 @@ public class ScrapeQuery implements Entity {
         this.radius = builder.radius;
         this.email = builder.email;
         this.roomSize = builder.roomSize;
+        this.hasWBS = builder.hasWBS;
     }
 
     /**
@@ -58,12 +62,13 @@ public class ScrapeQuery implements Entity {
      */
     public String toUrl() {
         String url = "https://www.immobilienscout24.de/Suche/de/";
-
-        // We dont handle radius yet.
         if (this.city == null) {
             return "";
         }
         url += parseCity() + "/wohnung-mieten?";
+        if (this.hasWBS){
+            url += "sozialwohnung-mieten?";
+        }
         if (!(this.roomSize == null)) {
             url += "numberofrooms=" + this.roomSize + "-&";
         }
@@ -110,7 +115,6 @@ public class ScrapeQuery implements Entity {
         this.city = city;
     }
 
-
     public Double getPriceTo() {
         return priceTo;
     }
@@ -143,9 +147,17 @@ public class ScrapeQuery implements Entity {
         this.radius = radius;
     }
 
+    public Boolean getHasWBS() {
+        return hasWBS;
+    }
+
+    public void setHasWBS(Boolean hasWBS) {
+        this.hasWBS = hasWBS;
+    }
+
     private String parseCity(){
         String toLowerCase = city.toLowerCase();
-        return toLowerCase + "/" +toLowerCase;
+        return toLowerCase + "/" +toLowerCase + "/friedrichshain-kreuzberg";
     }
 
     /**
@@ -160,6 +172,7 @@ public class ScrapeQuery implements Entity {
         private Double radius;
         private Double roomSize;
         private String email;
+        private boolean hasWBS;
 
         public ScrapeQueryBuilder city(String city) {
             this.city = city;
@@ -200,6 +213,12 @@ public class ScrapeQuery implements Entity {
             this.email = email;
             return this;
         }
+
+        public ScrapeQueryBuilder hasWBS(Boolean hasWBS) {
+            this.hasWBS = hasWBS;
+            return this;
+        }
+
 
         public ScrapeQuery build() {
             return new ScrapeQuery(this);

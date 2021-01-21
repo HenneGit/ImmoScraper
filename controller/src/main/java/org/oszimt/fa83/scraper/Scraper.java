@@ -63,4 +63,29 @@ public class Scraper {
             }
             return resultList;
     }
+
+    public String getGeoLocation() {
+        WebClient client = new WebClient(BrowserVersion.FIREFOX);
+        client.setJavaScriptTimeout(100000);
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(true);
+        client.getOptions().setGeolocationEnabled(true);
+        try {
+            HtmlPage page = client.getPage("file:///home/henne/projects/java/immoscraper/controller/src/main/resources/index.html");
+            List<HtmlElement> elementsByAttribute = page.getDocumentElement().getElementsByAttribute("div", "id", "geoLocation");
+            List<HtmlElement> elements = page.getDocumentElement().getElementsByTagName("div");
+            List<Object> byXPath = page.getByXPath("//*[@id=\"geoLocation\"]");
+            for (Object element : byXPath){
+                System.out.println(element);
+                String st = new String();
+            }
+            for (HtmlElement element : elementsByAttribute){
+                System.out.println(element);
+                String st = new String();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

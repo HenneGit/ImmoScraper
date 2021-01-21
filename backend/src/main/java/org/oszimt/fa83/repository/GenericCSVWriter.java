@@ -1,14 +1,17 @@
 package org.oszimt.fa83.repository;
 
 import com.opencsv.CSVWriter;
-import com.opencsv.bean.*;
-import com.opencsv.enums.CSVReaderNullFieldIndicator;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.api.Entity;
-import org.oszimt.fa83.pojo.ScrapeQuery;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

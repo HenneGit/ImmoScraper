@@ -1,5 +1,6 @@
 package org.oszimt.fa83.view;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -7,10 +8,7 @@ import javafx.collections.ObservableList;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.oszimt.fa83.ValidationException;
@@ -21,7 +19,9 @@ import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.pojo.ScrapeResultPojo;
 import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.util.QueryValidator;
+import org.oszimt.fa83.util.SearchJob;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -62,7 +62,11 @@ public class QuerySetupView extends AbstractView {
     @FXML
     private ComboBox<ScrapeQuery> queryComboBox;
 
-    private boolean isScraping;
+    @FXML
+    private CheckBox hasWBS;
+
+    private SearchJob searchJob;
+    private volatile boolean isScraping;
     private final MainController controller = MainController.getInstance();
 
     /**
@@ -102,6 +106,12 @@ public class QuerySetupView extends AbstractView {
      */
     @FXML
     private void startScraping() {
+        try {
+            controller.write();
+        } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
+            callError(e);
+        }
+
         if (isScraping) {
             return;
         }
@@ -118,29 +128,37 @@ public class QuerySetupView extends AbstractView {
             EmailSupplier.getInstance().setEmail(email.getText());
         }
         addTextToTextArea("Scraping wird gestartet... ");
+        searchJob = new SearchJob(this::search);
+        searchJob.start();
+    }
 
+    public void search() {
         try {
-            isScraping = true;
-            int randomTimeout = 0;
-            TimeUnit.MINUTES.sleep(randomTimeout);
             List<ScrapeResultPojo> results = controller.startScraping();
             if (results.size() > 0) {
-                controller.write();
                 addTextToTextArea(results.size() + " Ergebnisse gefunden");
                 addTextToTextArea("Sende email. ");
-                //disabled due to gmail authentication error.
-                //controller.sendEmail(packResultLinks(results), "Hab was gefunden");
+                controller.sendEmail(packResultLinks(results), "Hab was gefunden");
                 addTextToTextArea("Email gesendet ");
                 addTextToTextArea("Email wäre gesendet worden :(.");
                 addTextToTextArea(packResultLinks(results));
+            } else {
+                addTextToTextArea("Nichts gefunden");
             }
-            Random random = new Random();
-            randomTimeout = random.nextInt(1 + 5) + 1;
-            addTextToTextArea("Schlafe für " + randomTimeout + " Minuten");
-            addTextToTextArea("Scraping beendet.");
 
-        } catch (Exception e) {
-            isScraping = false;
+        } catch (IOException | CSVNotFoundException | MessagingException e) {
+            callError(e);
+        }
+
+    }
+
+    private void sendEmail(){
+
+        addTextToTextArea("sende email");
+        try {
+            controller.sendEmail("Test", "Test");
+            addTextToTextArea("email gesendet");
+        } catch (MessagingException e) {
             callError(e);
         }
 
@@ -185,8 +203,9 @@ public class QuerySetupView extends AbstractView {
      */
     @FXML
     private void stopScraping() {
-        addTextToTextArea("Stoppe...");
-        isScraping = false;
+        searchJob.kill();
+        addTextToTextArea("Suche gestoppt");
+
     }
 
     /**
@@ -210,8 +229,8 @@ public class QuerySetupView extends AbstractView {
                 .priceTo(parseDouble(priceTo.getText()))
                 .roomSize(RoomSize.getRoomSizeByDescription(rooms.getValue()))
                 .email(email.getText())
+                .hasWBS(hasWBS.isSelected())
                 .build();
-
     }
 
     private Double parseDouble(String doubleToParse) {
@@ -220,7 +239,6 @@ public class QuerySetupView extends AbstractView {
         } else {
             return Double.parseDouble(doubleToParse);
         }
-
     }
 
     private void fillRoomChoiceBox() {
@@ -277,6 +295,9 @@ public class QuerySetupView extends AbstractView {
             if (activeQuery.getEmail() != null) {
                 email.setText(activeQuery.getEmail());
             }
+            if (activeQuery.getHasWBS() != null) {
+                hasWBS.setSelected(activeQuery.getHasWBS());
+            }
             queryName.setText(activeQuery.getQueryName());
             city.setText(Objects.requireNonNull(activeQuery.getCity()));
             rooms.getSelectionModel().select(RoomSize.getRoomSizeString(activeQuery.getRoomSize()));
@@ -308,7 +329,7 @@ public class QuerySetupView extends AbstractView {
         StringBuilder builder = new StringBuilder();
         if (!resultPojos.isEmpty()) {
             for (ScrapeResultPojo pojo : resultPojos) {
-                if (pojo != null){
+                if (pojo != null) {
                     builder.append(pojo.getUrl());
                     builder.append("\n");
                 }

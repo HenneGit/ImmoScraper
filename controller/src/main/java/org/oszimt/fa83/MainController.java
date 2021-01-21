@@ -106,7 +106,7 @@ public class MainController {
      * @throws MessagingException
      */
     public void sendEmail(String body, String subject) throws MessagingException {
-        emailHandler.createEmailMessage(EmailSupplier.getEmail(), "body", "subject");
+        emailHandler.createEmailMessage(EmailSupplier.getEmail(), body , subject);
 
     }
 
@@ -119,6 +119,6 @@ public class MainController {
     }
 
     private boolean queryNameIsUnique(ScrapeQuery s) throws CSVNotFoundException {
-        return getScrapeQueries().stream().filter(q -> q.getQueryName().equals(s.getQueryName())).count() == 0;
+        return getScrapeQueries().stream().noneMatch(q -> q.getQueryName().equals(s.getQueryName()));
     }
 }
