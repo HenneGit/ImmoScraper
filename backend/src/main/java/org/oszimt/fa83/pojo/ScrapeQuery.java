@@ -58,6 +58,7 @@ public class ScrapeQuery implements Entity {
 
     /**
      * creates an url from entity properties. Used for scraping immoscout results.
+     *
      * @return new search url with entity properties.
      */
     public String toUrl() {
@@ -65,9 +66,11 @@ public class ScrapeQuery implements Entity {
         if (this.city == null) {
             return "";
         }
-        url += parseCity() + "/wohnung-mieten?";
-        if (this.hasWBS){
+        url += parseCity();
+        if (this.hasWBS) {
             url += "sozialwohnung-mieten?";
+        } else {
+            url += "/wohnung-mieten?";
         }
         if (!(this.roomSize == null)) {
             url += "numberofrooms=" + this.roomSize + "-&";
@@ -155,9 +158,9 @@ public class ScrapeQuery implements Entity {
         this.hasWBS = hasWBS;
     }
 
-    private String parseCity(){
+    private String parseCity() {
         String toLowerCase = city.toLowerCase();
-        return toLowerCase + "/" +toLowerCase + "/friedrichshain-kreuzberg";
+        return toLowerCase + "/" + toLowerCase + "/friedrichshain-kreuzberg";
     }
 
     /**

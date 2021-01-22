@@ -2,7 +2,6 @@ package org.oszimt.fa83.util;
 
 import javafx.application.Platform;
 
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class SearchJob extends Thread {
@@ -17,35 +16,28 @@ public class SearchJob extends Thread {
 
     public void run() {
         while (!exit) {
-            System.out.println("Renne");
+            long random = RandomTimeoutSupplier.getNewTimeout();
+            Runnable updater = new Runnable() {
+                @Override
+                public void run() {
+                    target.run();
+                }
+            };
+
+            Platform.runLater(updater);
             try {
-                System.out.println("Schlafe");
-                Runnable updater = new Runnable() {
-                    @Override
-                    public void run() {
-                       target.run();
-                    }
-                };
-                Platform.runLater(updater);
-                long random = getRandomLong();
-                System.out.println(random);
+                System.out.println(random/1000);
                 TimeUnit.MILLISECONDS.sleep(random);
             } catch (InterruptedException e) {
-                this.exit = true;
                 e.printStackTrace();
             }
+
         }
     }
 
-    public void kill(){
-        System.out.println("Stoppe");
+    public void kill() {
         this.exit = true;
     }
 
-    private long getRandomLong(){
-        long leftLimit = 50000L;
-        long rightLimit = 700000L;
-        long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
-        return generatedLong;
-    }
+
 }

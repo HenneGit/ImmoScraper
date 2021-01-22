@@ -19,6 +19,7 @@ import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.pojo.ScrapeResultPojo;
 import org.oszimt.fa83.repository.CSVNotFoundException;
 import org.oszimt.fa83.util.QueryValidator;
+import org.oszimt.fa83.util.RandomTimeoutSupplier;
 import org.oszimt.fa83.util.SearchJob;
 
 import javax.mail.MessagingException;
@@ -142,6 +143,9 @@ public class QuerySetupView extends AbstractView {
                 addTextToTextArea("Email gesendet ");
                 addTextToTextArea("Email wäre gesendet worden :(.");
                 addTextToTextArea(packResultLinks(results));
+                long random = RandomTimeoutSupplier.getCurrentTimeout();
+                addTextToTextArea("Schlafe für " + random/1000 + " Sekunden");
+
             } else {
                 addTextToTextArea("Nichts gefunden");
             }
@@ -337,4 +341,6 @@ public class QuerySetupView extends AbstractView {
         }
         return builder.toString();
     }
+
+
 }
