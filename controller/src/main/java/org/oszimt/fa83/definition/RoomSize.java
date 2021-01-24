@@ -52,10 +52,10 @@ public enum RoomSize {
      * @param value the double value to find the description for.
      * @return the description string.
      */
-    public static String getRoomSizeString(Double value){
+    public static RoomSize getRoomSizeByDouble(Double value){
         for (RoomSize roomSize : RoomSize.values()){
             if (roomSize.getSize().equals(value)){
-                return roomSize.getDescription();
+                return roomSize;
             }
         }
         return null;

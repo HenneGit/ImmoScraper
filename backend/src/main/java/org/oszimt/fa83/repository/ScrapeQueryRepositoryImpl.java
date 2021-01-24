@@ -46,10 +46,11 @@ public class ScrapeQueryRepositoryImpl implements ScrapeQueryRepository {
         scrapeQuery.setEmail(query.getEmail());
         scrapeQuery.setQueryName(query.getQueryName());
         scrapeQuery.setCity(query.getCity());
-        scrapeQuery.setRadius(query.getRadius());
         scrapeQuery.setPriceTo(query.getPriceTo());
         scrapeQuery.setRoomSize(query.getRoomSize());
         scrapeQuery.setSpace(query.getSpace());
+        scrapeQuery.setHasWBS(query.getHasWBS());
+        scrapeQuery.setDistrict(query.getDistrict());
         return scrapeQuery;
     }
 

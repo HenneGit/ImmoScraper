@@ -2,7 +2,10 @@ package org.oszimt.fa83.pojo;
 
 import com.opencsv.bean.CsvBindByName;
 import org.oszimt.fa83.api.Entity;
-import org.oszimt.fa83.util.IdCounter;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Pojo for setting up a search in immoscout.
@@ -25,9 +28,6 @@ public class ScrapeQuery implements Entity {
     @CsvBindByName(column = "space")
     private Double space;
 
-    @CsvBindByName(column = "radius")
-    private Double radius;
-
     @CsvBindByName(column = "roomSize")
     private Double roomSize;
 
@@ -36,6 +36,10 @@ public class ScrapeQuery implements Entity {
 
     @CsvBindByName(column = "hasWBS")
     private Boolean hasWBS;
+
+    @CsvBindByName(column = "districts")
+    private String district;
+
 
     /**
      * use for bean creation only. To create new ScrapeQuery object use {@link ScrapeQueryBuilder}.
@@ -50,10 +54,10 @@ public class ScrapeQuery implements Entity {
         this.priceTo = builder.priceTo;
         this.queryName = builder.queryName;
         this.space = builder.space;
-        this.radius = builder.radius;
         this.email = builder.email;
         this.roomSize = builder.roomSize;
         this.hasWBS = builder.hasWBS;
+        this.district = builder.district;
     }
 
     /**
@@ -67,21 +71,33 @@ public class ScrapeQuery implements Entity {
             return "";
         }
         url += parseCity();
+        if (this.district.contains("/")) {
+            url += this.district;
+        }
+
         if (this.hasWBS) {
-            url += "sozialwohnung-mieten?";
+            url += "/sozialwohnung-mieten?";
         } else {
             url += "/wohnung-mieten?";
         }
         if (!(this.roomSize == null)) {
             url += "numberofrooms=" + this.roomSize + "-&";
         }
+
+
         if (!(this.priceTo == null)) {
             url += "price=-" + this.priceTo + "&";
         }
         if (!(this.space == null)) {
             url += "livingspace=" + this.space + "-&";
         }
-        url += "pricetype=rentpermonth&enteredFrom=one_step_search";
+        url += "pricetype=rentpermonth&";
+        if (this.getDistrict().contains(";")) {
+            String replaced = this.district.replace(";", ",");
+
+            url += "geocodes=" + replaced.substring(0, replaced.length() - 1);
+        }
+        url +="&enteredFrom=result_list";
         return url;
     }
 
@@ -142,14 +158,6 @@ public class ScrapeQuery implements Entity {
         this.space = space;
     }
 
-    public Double getRadius() {
-        return radius;
-    }
-
-    public void setRadius(Double radius) {
-        this.radius = radius;
-    }
-
     public Boolean getHasWBS() {
         return hasWBS;
     }
@@ -158,9 +166,17 @@ public class ScrapeQuery implements Entity {
         this.hasWBS = hasWBS;
     }
 
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     private String parseCity() {
         String toLowerCase = city.toLowerCase();
-        return toLowerCase + "/" + toLowerCase + "/friedrichshain-kreuzberg";
+        return toLowerCase + "/" + toLowerCase;
     }
 
     /**
@@ -172,10 +188,10 @@ public class ScrapeQuery implements Entity {
         private String pk;
         private String queryName;
         private Double space;
-        private Double radius;
         private Double roomSize;
         private String email;
         private boolean hasWBS;
+        private String district;
 
         public ScrapeQueryBuilder city(String city) {
             this.city = city;
@@ -184,11 +200,6 @@ public class ScrapeQuery implements Entity {
 
         public ScrapeQueryBuilder queryName(String queryName) {
             this.queryName = queryName;
-            return this;
-        }
-
-        public ScrapeQueryBuilder radius(Double radius) {
-            this.radius = radius;
             return this;
         }
 
@@ -222,6 +233,10 @@ public class ScrapeQuery implements Entity {
             return this;
         }
 
+        public ScrapeQueryBuilder district(String district) {
+            this.district = district;
+            return this;
+        }
 
         public ScrapeQuery build() {
             return new ScrapeQuery(this);

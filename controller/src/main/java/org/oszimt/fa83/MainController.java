@@ -2,6 +2,7 @@ package org.oszimt.fa83;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import org.oszimt.fa83.definition.District;
 import org.oszimt.fa83.email.EmailHandler;
 import org.oszimt.fa83.email.EmailSupplier;
 import org.oszimt.fa83.pojo.ScrapeQuery;
@@ -14,10 +15,7 @@ import org.oszimt.fa83.scraper.Scraper;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * singleton controller class for organizing data and communication between backend and frontend. Hold current active
@@ -120,5 +118,13 @@ public class MainController {
 
     private boolean queryNameIsUnique(ScrapeQuery s) throws CSVNotFoundException {
         return getScrapeQueries().stream().noneMatch(q -> q.getQueryName().equals(s.getQueryName()));
+    }
+
+    public List<District> getDistricts(List<Long> zipCodes){
+        List<District> districts = Arrays.asList(District.values());
+        districts.removeIf(d -> zipCodes.contains(d.getZipCode()));
+        return districts;
+
+
     }
 }

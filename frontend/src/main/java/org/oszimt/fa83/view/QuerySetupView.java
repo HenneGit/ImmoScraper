@@ -1,6 +1,5 @@
 package org.oszimt.fa83.view;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -11,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.controlsfx.control.CheckComboBox;
 import org.oszimt.fa83.ValidationException;
+import org.oszimt.fa83.definition.District;
 import org.oszimt.fa83.definition.RoomSize;
 import org.oszimt.fa83.email.EmailSupplier;
 import org.oszimt.fa83.MainController;
@@ -27,7 +28,6 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -55,13 +55,16 @@ public class QuerySetupView extends AbstractView {
     private TextField queryName;
 
     @FXML
-    private ChoiceBox<String> rooms;
+    private ComboBox<RoomSize> rooms;
 
     @FXML
     private TextArea textArea;
 
     @FXML
     private ComboBox<ScrapeQuery> queryComboBox;
+
+    @FXML
+    private CheckComboBox<District> districts;
 
     @FXML
     private CheckBox hasWBS;
@@ -78,18 +81,28 @@ public class QuerySetupView extends AbstractView {
             Collection<ScrapeQuery> scrapeQueries = controller.getScrapeQueries();
             ObservableList<ScrapeQuery> queryList = FXCollections.observableArrayList(scrapeQueries);
             queryComboBox.itemsProperty().setValue(queryList);
+
+            ObservableList<District> allDistricts = FXCollections.observableArrayList(Arrays.asList(District.values()));
+            districts.getItems().addAll(allDistricts);
+
+            ObservableList<RoomSize> allRoomSizes = FXCollections.observableArrayList(Arrays.asList(RoomSize.values()));
+            rooms.itemsProperty().setValue(allRoomSizes);
+
+
         } catch (Exception e) {
             try {
                 if (e instanceof CSVNotFoundException) {
                     controller.write();
+                    initialize();
                 }
             } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException csvRequiredFieldEmptyException) {
                 callError(e);
             }
         }
-        fillRoomChoiceBox();
         updateCombobox();
-        convertComboDisplayList();
+        convertScrapeQueryComboBox();
+        convertDistrictComboBox();
+        convertRoomsComboBox();
         queryComboBox.valueProperty().addListener(new ChangeListener<ScrapeQuery>() {
             @Override
             public void changed(ObservableValue<? extends ScrapeQuery> observableValue, ScrapeQuery query, ScrapeQuery t1) {
@@ -141,28 +154,15 @@ public class QuerySetupView extends AbstractView {
                 addTextToTextArea("Sende email. ");
                 controller.sendEmail(packResultLinks(results), "Hab was gefunden");
                 addTextToTextArea("Email gesendet ");
-                addTextToTextArea("Email wäre gesendet worden :(.");
                 addTextToTextArea(packResultLinks(results));
                 long random = RandomTimeoutSupplier.getCurrentTimeout();
-                addTextToTextArea("Schlafe für " + random/1000 + " Sekunden");
+                addTextToTextArea("Schlafe für " + random / 1000 + " Sekunden");
 
             } else {
                 addTextToTextArea("Nichts gefunden");
             }
 
         } catch (IOException | CSVNotFoundException | MessagingException e) {
-            callError(e);
-        }
-
-    }
-
-    private void sendEmail(){
-
-        addTextToTextArea("sende email");
-        try {
-            controller.sendEmail("Test", "Test");
-            addTextToTextArea("email gesendet");
-        } catch (MessagingException e) {
             callError(e);
         }
 
@@ -228,14 +228,36 @@ public class QuerySetupView extends AbstractView {
         return new ScrapeQuery.ScrapeQueryBuilder()
                 .queryName(queryName.getText())
                 .city(city.getText())
-                .radius(parseDouble(radius.getText()))
                 .space(parseDouble(space.getText()))
                 .priceTo(parseDouble(priceTo.getText()))
-                .roomSize(RoomSize.getRoomSizeByDescription(rooms.getValue()))
+                .roomSize(rooms.getValue().getSize())
                 .email(email.getText())
+                .district(getZipCodes())
                 .hasWBS(hasWBS.isSelected())
                 .build();
     }
+
+    private String getZipCodes() {
+        ObservableList<Integer> checkedIndices = districts.getCheckModel().getCheckedIndices();
+        if (checkedIndices.size() > 1) {
+            List<District> selectedDistricts = new ArrayList<>();
+            for (Integer integer : checkedIndices) {
+                selectedDistricts.add(districts.getItems().get(integer.intValue()));
+            }
+
+            List<Long> zipCodes = selectedDistricts.stream().map(District::getZipCode).collect(Collectors.toList());
+            StringBuilder sb = new StringBuilder();
+            zipCodes.forEach(zipCode -> {
+                sb.append(zipCode);
+                sb.append(";");
+            });
+            return sb.toString();
+        } else {
+            return districts.getItems().get(checkedIndices.get(0)).getLocationURL();
+        }
+
+    }
+
 
     private Double parseDouble(String doubleToParse) {
         if (StringUtils.isEmpty(doubleToParse)) {
@@ -245,12 +267,7 @@ public class QuerySetupView extends AbstractView {
         }
     }
 
-    private void fillRoomChoiceBox() {
-        List<String> collect = Arrays.stream(RoomSize.values()).map(RoomSize::getDescription).collect(Collectors.toList());
-        rooms.getItems().addAll(collect);
-    }
-
-    private void convertComboDisplayList() {
+    private void convertScrapeQueryComboBox() {
         queryComboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(ScrapeQuery product) {
@@ -264,7 +281,37 @@ public class QuerySetupView extends AbstractView {
         });
     }
 
+    private void convertRoomsComboBox() {
+        rooms.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(RoomSize size) {
+                return size.getDescription();
+            }
+
+            @Override
+            public RoomSize fromString(final String string) {
+                return rooms.getItems().stream().filter(rooms -> rooms.getDescription().equals(string)).findFirst().orElse(null);
+            }
+        });
+    }
+
+    private void convertDistrictComboBox() {
+        districts.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(District size) {
+                return size.getDistrict();
+            }
+
+            @Override
+            public District fromString(final String string) {
+                return districts.getItems().stream().filter(district -> district.getDistrict().equals(string)).findFirst().orElse(null);
+            }
+        });
+    }
+
+
     private void updateCombobox() {
+        resetDistricts();
         ObservableList<ScrapeQuery> queryList = null;
         try {
             queryList = FXCollections.observableArrayList(controller.getScrapeQueries());
@@ -272,7 +319,7 @@ public class QuerySetupView extends AbstractView {
             callError(e);
         }
         queryComboBox.itemsProperty().setValue(queryList);
-        convertComboDisplayList();
+        convertScrapeQueryComboBox();
 
     }
 
@@ -284,12 +331,10 @@ public class QuerySetupView extends AbstractView {
     }
 
     private void fillScrapeQueryFields() {
+        resetDistricts();
         ScrapeQuery activeQuery = controller.getActiveQuery();
         if (activeQuery != null) {
 
-            if (activeQuery.getRadius() != null) {
-                radius.setText(String.valueOf(activeQuery.getRadius().doubleValue()));
-            }
             if (activeQuery.getSpace() != null) {
                 space.setText(String.valueOf(activeQuery.getSpace().doubleValue()));
             }
@@ -304,10 +349,15 @@ public class QuerySetupView extends AbstractView {
             }
             queryName.setText(activeQuery.getQueryName());
             city.setText(Objects.requireNonNull(activeQuery.getCity()));
-            rooms.getSelectionModel().select(RoomSize.getRoomSizeString(activeQuery.getRoomSize()));
+            rooms.getSelectionModel().select(RoomSize.getRoomSizeByDouble(activeQuery.getRoomSize()));
+            if (activeQuery.getDistrict() != null ){
+                List<Integer> checkedIndices = getCheckedIndices(activeQuery.getDistrict());
+                checkedIndices.forEach(i -> districts.getCheckModel().check(i));
+            }
         }
 
     }
+
 
     private void clearTextArea() {
         textArea.setText("");
@@ -315,7 +365,6 @@ public class QuerySetupView extends AbstractView {
 
     private List<TextField> getAllTextFields() {
         List<TextField> allFields = new ArrayList<>();
-        allFields.add(radius);
         allFields.add(space);
         allFields.add(email);
         allFields.add(queryName);
@@ -340,6 +389,37 @@ public class QuerySetupView extends AbstractView {
             }
         }
         return builder.toString();
+    }
+
+
+    private List<Integer> getCheckedIndices(String district) {
+        List<Integer> indices = new ArrayList<>();
+        if (district.contains("/")) {
+            for (District dis : districts.getItems()) {
+                if (dis.getLocationURL().equals(district)) {
+                    indices.add(districts.getItems().indexOf(dis));
+                }
+            }
+        }
+        if (district.contains(";")) {
+            List<Long> zipCodes = Arrays.stream(district.split(";"))
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+
+            districts.getItems().forEach(d -> {
+                if (zipCodes.contains(d.getZipCode())) {
+                    indices.add(districts.getItems().indexOf(d));
+                }
+            });
+        }
+        return indices;
+
+    }
+
+    private void resetDistricts(){
+        for (int i = 0; i < districts.getItems().size(); i++) {
+            districts.getCheckModel().clearCheck(i);
+        }
     }
 
 
