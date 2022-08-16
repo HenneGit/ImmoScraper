@@ -22,8 +22,8 @@ public class RandomTimeoutSupplier {
     }
 
     private static long getRandomLong(){
-        long leftLimit = 50000L;
-        long rightLimit = 700000L;
+        long leftLimit = 23000L;
+        long rightLimit = 200000L;
         return leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
     }
 }

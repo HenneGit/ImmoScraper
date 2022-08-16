@@ -6,7 +6,7 @@ package org.oszimt.fa83.definition;
 public enum Layout {
 
 
-    QUERY("QuerySetupView.fxml"), ERROR("error.fxml");
+    QUERY("QuerySetupView.fxml"), ERROR("error.fxml"), EMAIL("EmailSetup.fxml");
 
 
     private String fileName;

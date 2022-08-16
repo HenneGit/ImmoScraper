@@ -11,11 +11,13 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.CheckComboBox;
+import org.oszimt.fa83.StageController;
 import org.oszimt.fa83.ValidationException;
 import org.oszimt.fa83.definition.District;
 import org.oszimt.fa83.definition.RoomSize;
 import org.oszimt.fa83.email.EmailSupplier;
 import org.oszimt.fa83.MainController;
+import org.oszimt.fa83.exception.NoEmailCredentialsSet;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.pojo.ScrapeResultPojo;
 import org.oszimt.fa83.repository.CSVNotFoundException;
@@ -44,9 +46,6 @@ public class QuerySetupView extends AbstractView {
 
     @FXML
     private TextField email;
-
-    @FXML
-    private TextField radius;
 
     @FXML
     private TextField space;
@@ -103,12 +102,9 @@ public class QuerySetupView extends AbstractView {
         convertScrapeQueryComboBox();
         convertDistrictComboBox();
         convertRoomsComboBox();
-        queryComboBox.valueProperty().addListener(new ChangeListener<ScrapeQuery>() {
-            @Override
-            public void changed(ObservableValue<? extends ScrapeQuery> observableValue, ScrapeQuery query, ScrapeQuery t1) {
-                controller.setActiveQuery(t1);
-                fillScrapeQueryFields();
-            }
+        queryComboBox.valueProperty().addListener((observableValue, query, t1) -> {
+            controller.setActiveQuery(t1);
+            fillScrapeQueryFields();
         });
         textArea.setEditable(false);
     }
@@ -162,7 +158,7 @@ public class QuerySetupView extends AbstractView {
                 addTextToTextArea("Nichts gefunden");
             }
 
-        } catch (IOException | CSVNotFoundException | MessagingException e) {
+        } catch (IOException | CSVNotFoundException | MessagingException | NoEmailCredentialsSet e) {
             callError(e);
         }
 
@@ -181,6 +177,12 @@ public class QuerySetupView extends AbstractView {
         }
         updateCombobox();
         addTextToTextArea(queryName.getText() + " wurde gelöscht");
+    }
+
+    @FXML
+    private void openEmailSettings() {
+        StageController.getInstance().callEmailSetup();
+
     }
 
     /**
@@ -421,6 +423,5 @@ public class QuerySetupView extends AbstractView {
             districts.getCheckModel().clearCheck(i);
         }
     }
-
 
 }

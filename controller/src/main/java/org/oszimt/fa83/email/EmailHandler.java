@@ -1,9 +1,8 @@
 package org.oszimt.fa83.email;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import org.oszimt.fa83.pojo.EmailCredentials;
+
+import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -14,7 +13,10 @@ import java.util.Properties;
  */
 public class EmailHandler {
 
-    public EmailHandler() {
+    private EmailCredentials credentials;
+
+    public EmailHandler(EmailCredentials credentials) {
+        this.credentials = credentials;
     }
 
     /**
@@ -23,11 +25,11 @@ public class EmailHandler {
      */
     private Properties getMailServerProperties() {
 
-        String emailPort = "587";//gmail's smtp port
         Properties emailProperties = new Properties();
-        emailProperties.put("mail.smtp.port", emailPort);
+        emailProperties.put("mail.smtp.port", credentials.getPort());
         emailProperties.put("mail.smtp.auth", "true");
         emailProperties.put("mail.smtp.starttls.enable", "true");
+        emailProperties.put("mail.transport.protocol", "smtp");
         return emailProperties;
 
     }
@@ -47,6 +49,7 @@ public class EmailHandler {
         emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
         emailMessage.setSubject(emailSubject);
         emailMessage.setContent(body, "text/html");//for a html email
+        emailMessage.setFrom(credentials.getEmail());
         emailMessage.setText(body);// for a text email
         sendEmail(mailSession, emailMessage);
 
@@ -59,13 +62,12 @@ public class EmailHandler {
      * @throws AddressException
      * @throws MessagingException
      */
-    private void sendEmail(Session mailSession, MimeMessage emailMessage) throws AddressException, MessagingException {
-        String emailHost = "smtp.gmail.com";
-        String fromUser = "immoscraper24@gmail.com";
-        String fromUserEmailPassword = "!mm0Scr4p3r";
+    private void sendEmail(Session mailSession, MimeMessage emailMessage) throws MessagingException {
         Transport transport = mailSession.getTransport("smtp");
-        transport.connect(emailHost, fromUser, fromUserEmailPassword);
+        transport.connect(credentials.getSmtp(), credentials.getEmail(), credentials.getPassword());
         transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
         transport.close();
     }
+
+
 }

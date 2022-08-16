@@ -5,10 +5,14 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.oszimt.fa83.definition.District;
 import org.oszimt.fa83.email.EmailHandler;
 import org.oszimt.fa83.email.EmailSupplier;
+import org.oszimt.fa83.exception.NoEmailCredentialsSet;
+import org.oszimt.fa83.pojo.EmailCredentials;
 import org.oszimt.fa83.pojo.ScrapeQuery;
 import org.oszimt.fa83.repository.CSVNotFoundException;
+import org.oszimt.fa83.repository.EmailCredentialsRepositoryImpl;
 import org.oszimt.fa83.repository.ScrapeQueryRepositoryImpl;
 import org.oszimt.fa83.repository.ScrapeResultRepositoryImpl;
+import org.oszimt.fa83.repository.api.EmailCredentialsRepository;
 import org.oszimt.fa83.repository.api.ScrapeQueryRepository;
 import org.oszimt.fa83.pojo.ScrapeResultPojo;
 import org.oszimt.fa83.scraper.Scraper;
@@ -24,10 +28,10 @@ import java.util.*;
 public class MainController {
 
     private final Scraper scraper = new Scraper();
-    private final EmailHandler emailHandler = new EmailHandler();
     private static final MainController INSTANCE = new MainController();
     private final ScrapeQueryRepository repository = ScrapeQueryRepositoryImpl.getInstance();
     private final ScrapeResultRepositoryImpl resultRepository = ScrapeResultRepositoryImpl.getInstance();
+    private final EmailCredentialsRepository emailCredentialsRepository = EmailCredentialsRepositoryImpl.getInstance();
     private ScrapeQuery activeQuery;
 
     private MainController() {
@@ -51,7 +55,8 @@ public class MainController {
                 throw new ValidationException("Name des Auftrags schon vorhanden");
             } else {
                 if (this.activeQuery != null && query.getQueryName().equals(Objects.requireNonNull(this.activeQuery.getQueryName()))) {
-                    return repository.update(activeQuery.getPk(), query);
+                    Collection<ScrapeQuery> all = repository.findAll();
+
                 }
             }
         }
@@ -61,6 +66,14 @@ public class MainController {
 
     public Collection<ScrapeQuery> getScrapeQueries() throws CSVNotFoundException {
         return repository.findAll();
+    }
+
+    public boolean checkEntry(int zahl1, int zahl2) {
+        if (zahl1 > zahl2) {
+            return true;
+
+        }
+        return false;
     }
 
     public void removeQuery(Comparable<?> pk) {
@@ -76,6 +89,11 @@ public class MainController {
     public void write() throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         repository.write();
         resultRepository.write();
+    }
+
+    public void writeEmailCredentials() throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+        emailCredentialsRepository.write();
+
     }
 
     /**
@@ -103,9 +121,23 @@ public class MainController {
      * @param subject subject of email 
      * @throws MessagingException
      */
-    public void sendEmail(String body, String subject) throws MessagingException {
-        emailHandler.createEmailMessage(EmailSupplier.getEmail(), body , subject);
+    public void sendEmail(String body, String subject) throws MessagingException, CSVNotFoundException, NoEmailCredentialsSet {
+        EmailCredentials emailCredentials = emailCredentialsRepository.getEmailCredentials();
+        if (emailCredentials == null) {
+            throw new NoEmailCredentialsSet();
+        }
 
+        EmailHandler handler = new EmailHandler(emailCredentials);
+        handler.createEmailMessage(EmailSupplier.getEmail(), body , subject);
+
+    }
+
+    public void setEmailCredentials(String email, String smtp, String password, int portNumber) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+        emailCredentialsRepository.setEmailCredentials(email, smtp, password, portNumber);
+    }
+
+    public EmailCredentials getEmailCredentials() throws CSVNotFoundException {
+        return emailCredentialsRepository.getEmailCredentials();
     }
 
     public ScrapeQuery getActiveQuery() {
@@ -120,11 +152,4 @@ public class MainController {
         return getScrapeQueries().stream().noneMatch(q -> q.getQueryName().equals(s.getQueryName()));
     }
 
-    public List<District> getDistricts(List<Long> zipCodes){
-        List<District> districts = Arrays.asList(District.values());
-        districts.removeIf(d -> zipCodes.contains(d.getZipCode()));
-        return districts;
-
-
-    }
 }

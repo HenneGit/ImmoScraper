@@ -7,7 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.oszimt.fa83.definition.Layout;
+import org.oszimt.fa83.exception.NoEmailCredentialsSet;
 import org.oszimt.fa83.repository.CSVNotFoundException;
+import org.oszimt.fa83.view.EmailSetup;
 import org.oszimt.fa83.view.ErrorView;
 
 import java.io.IOException;
@@ -44,9 +46,9 @@ public class StageController {
         stage.setMinHeight(320D);
         stage.setMinWidth(660D);
         stage.setOnCloseRequest(event -> {
-            System.out.println("Stage is closing");
             try {
                 controller.write();
+                controller.writeEmailCredentials();
             } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
                 callErrorLayout(e);
             }
@@ -89,11 +91,29 @@ public class StageController {
             view.initStage(root);
             return;
         }
-        else {
+        if (exception instanceof NoEmailCredentialsSet) {
+            NoEmailCredentialsSet ex = (NoEmailCredentialsSet) exception;
+            view.setMessage(ex.getMessage());
+            view.initStage(root);
+            return;
+
+        } else {
             exception.printStackTrace(pw);
             view.setMessage(writer.toString());
         }
         view.initStage(root);
+    }
+
+    public void callEmailSetup() {
+        Parent root = null;
+        try {
+            root = loadFXML(Layout.EMAIL.getFileName());
+        } catch (IOException e) {
+            System.exit(1);
+        }
+        EmailSetup view = loader.getController();
+        view.initStage(root);
+
     }
 
 }
