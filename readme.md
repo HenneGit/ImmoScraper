@@ -1,4 +1,4 @@
-# ImmoScraper
+# ImmoScraper (migriert von GitLab)
 ImmoScraper ist im Rahmen eines Schulprojekts im zweiten Ausbildungslehrjahr entstanden und wurde mit der Note 1,3 bewertet. 
 
 "Liebes Team ImmoScaper,
