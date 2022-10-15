@@ -17,16 +17,9 @@ public class SearchJob extends Thread {
     public void run() {
         while (!exit) {
             long random = RandomTimeoutSupplier.getNewTimeout();
-            Runnable updater = new Runnable() {
-                @Override
-                public void run() {
-                    target.run();
-                }
-            };
 
-            Platform.runLater(updater);
+            Platform.runLater(target);
             try {
-                System.out.println(random/1000);
                 TimeUnit.MILLISECONDS.sleep(random);
             } catch (InterruptedException e) {
                 e.printStackTrace();

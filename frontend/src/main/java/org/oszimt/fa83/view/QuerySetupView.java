@@ -182,7 +182,6 @@ public class QuerySetupView extends AbstractView {
     @FXML
     private void openEmailSettings() {
         StageController.getInstance().callEmailSetup();
-
     }
 
     /**
@@ -352,7 +351,7 @@ public class QuerySetupView extends AbstractView {
             queryName.setText(activeQuery.getQueryName());
             city.setText(Objects.requireNonNull(activeQuery.getCity()));
             rooms.getSelectionModel().select(RoomSize.getRoomSizeByDouble(activeQuery.getRoomSize()));
-            if (activeQuery.getDistrict() != null ){
+            if (activeQuery.getDistrict() != null) {
                 List<Integer> checkedIndices = getCheckedIndices(activeQuery.getDistrict());
                 checkedIndices.forEach(i -> districts.getCheckModel().check(i));
             }
@@ -418,7 +417,7 @@ public class QuerySetupView extends AbstractView {
 
     }
 
-    private void resetDistricts(){
+    private void resetDistricts() {
         for (int i = 0; i < districts.getItems().size(); i++) {
             districts.getCheckModel().clearCheck(i);
         }
