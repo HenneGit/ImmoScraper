@@ -1,5 +1,9 @@
 # ImmoScraper
-ImmoScraper ist im Rahmen eines Schulprojekts entstanden.
+ImmoScraper ist im Rahmen eines Schulprojekts im zweiten Ausbildungslehrjahr entstanden und wurde mit der Note 1,3 bewertet. 
+
+"Liebes Team ImmoScaper,
+last but not least :-) Insgesamt ist das Projekt mit einer 1,3 das Beste aller abgegebenen Softwareprojekte (in den 3 Klassen!)."
+
 
 Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Suchkriterien Wohnungen/Immobilien auf ImmoScout24 (https://www.immobilienscout24.de) heraussucht und dem Nutzer Informationen über Wohnungen/Immobilien per E-Mail zukommen lässt.
 ## Inhaltsverzeichnis
