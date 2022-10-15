@@ -2,9 +2,6 @@
 ImmoScraper ist im Rahmen eines Schulprojekts entstanden.
 
 Bei ImmoScraper handelt es sich um eine Java-Anwendung, die nach bestimmten Suchkriterien Wohnungen/Immobilien auf ImmoScout24 (https://www.immobilienscout24.de) heraussucht und dem Nutzer Informationen über Wohnungen/Immobilien per E-Mail zukommen lässt.
-Momentan Einschränkungen: 
-Emailversand funktioniert nicht. 
-Das Scraping muss jeweils neu angestoßen werden. Die Wiederholung verursacht Probleme mit JavaFx.
 ## Inhaltsverzeichnis
 
 - [Installation](#installation)
